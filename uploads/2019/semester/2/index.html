@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1 - 2019 Question Papers</title>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Quicksand", sans-serif;
+    }
+    
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #111;
+        color:white;
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
+        transition: background 0.5s, color 0.5s;
+        position: relative;
+    }
+    .dark-mode {
+        background: #fff;
+        color: black;
+    }
+    .toggle-btn {
+        position: absolute;
+
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        background: #0078ff;
+        color: white;
+        border: none;
+        border-radius: 25%;
+        font-size: 16px;
+        z-index: 10;
+        display: flex;
+        width: 60px;
+        height: 60px;
+        align-items: center;
+    }
+    .toggle-btn img {
+        height: 45px;
+        width: 45px;
+        display: flex;
+    }
+    .ring {
+        position: fixed;
+        width: 800px;
+        height: 800px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+    .ring i {
+        position: absolute;
+        inset: 0;
+        border: 6px solid #fff; /* Default ring color in dark mode is white */
+        transition: all 0.5s ease;
+        border-color: #fff; /* ADDED: Default border color for visibility */
+    }
+    .dark-mode .ring i {
+        border-color: black; /* CORRECTED: Rings are BLACK in LIGHT mode */
+    }
+    .ring i:nth-child(1) {
+        border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+        animation: animate 6s linear infinite;
+    }
+    .ring i:nth-child(2) {
+        border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+        animation: animate 4s linear infinite;
+    }
+    .ring i:nth-child(3) {
+        border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+        animation: animate2 10s linear infinite;
+    }
+    @keyframes animate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    @keyframes animate2 {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+    }
+    .container {
+        z-index: 10;
+        position: relative;
+    }
+    .pdf-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+        z-index: 10;
+    }
+    .pdf-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: white; /* Default light mode text color */
+        font-size: 18px;
+        width: 120px;
+        padding: 10px;
+        transition: color 0.5s;
+    }
+    .dark-mode .pdf-item {
+        color: #111; /* Dark mode text color */
+    }
+    .pdf-icon {
+        width: 70px;
+        height: 70px;
+        transition: filter 0.5s;
+    }
+    .dark-mode .pdf-icon {
+        filter: invert(1);
+    }
+    /* Style for the main headings */
+    .container h1 {
+        font-size: 50px;
+    }
+    .container p {
+        font-size: 40px;
+    }
+</style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    <div class="container">
+        <h1 >Semester 2</h1>
+        <br/>
+        <br/>
+        <h1>No Question Papers Were Available For 2nd Semester of 2019</h1>
+        <p>Working To Get All The Question Paper By The End Of The M    onth</p>
+        <div class="pdf-container">
+    <script>
+
+    
+      
+    
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle("dark-mode");
+            const modeIcon = document.getElementById('mode-icon');
+            modeIcon.src = body.classList.contains("dark-mode") ? "/static/light.png" : "/static/dark.png";
+    
+            // Toggle PDF icon visibility
+            const pdfIcons = document.querySelectorAll('.pdf-icon');
+            pdfIcons.forEach(icon => {
+                icon.style.filter = body.classList.contains("dark-mode") ? 'invert(1)' : 'invert(0)';
+            });
+    
+            updateRingColors(body.classList.contains("dark-mode"));
+        }
+    
+        // Glow effect logic
+        const rings = document.querySelectorAll('.ring i');
+        const ringContainer = document.querySelector('.ring');
+    
+        function updateRingColors(isDarkMode) { // Corrected function for default ring colors
+            rings.forEach(ring => {
+                ring.style.borderColor = isDarkMode ? '#fff' : '#000'; // White for dark, Black for light (corrected!)
+                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+            });
+        }
+    
+        updateRingColors(false); // Initialize for default dark mode
+    
+        document.addEventListener('mousemove', (e) => {
+            const body = document.body; // Get body *inside* event listener to reflect mode changes
+            const rect = ringContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width/2;
+            const centerY = rect.top + rect.height/2;
+            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
+            const radius = rect.width/2;
+    
+            rings.forEach(ring => {
+                if (distance <= radius) {
+                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
+                    ring.style.borderColor = clr;
+                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
+                } else {
+                    // Correctly reset to MODE-DEPENDENT default color on mouseout
+                    ring.style.borderColor = body.classList.contains("dark-mode") ? '#000' : 'white'; // Use #000 for light mode
+                    ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+                }
+            });
+        });
+    </script>

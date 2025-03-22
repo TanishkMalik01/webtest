@@ -1,0 +1,197 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap"); /* Import font */
+
+/* Reset and General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif; /* Use Quicksand font */
+}
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4; /* Default light mode background */
+    color: black; /* Default light mode text color */
+    position: relative;
+    overflow: hidden; /* To contain rings */
+    transition: background 0.5s, color 0.5s; /* Smooth mode switch */
+
+    display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Vertically center content */
+    align-items: center; /* Horizontally center content */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    margin: 0; /* Reset default body margin */
+}
+.dark-mode {
+    background-color: #111; /* Dark mode background */
+    color: white; /* Dark mode text color */
+}
+.container {
+    margin-top: 50px;
+    z-index: 10; /* Ensure container is above rings */
+    position: relative; /* For stacking context */
+}
+h1, p {
+    color: inherit; /* Inherit color from body for mode switch */
+}
+
+/* Toggle Button Styles */
+.toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background: #0078ff;
+    color: white;
+    border: none;
+    border-radius: 25%;
+    font-size: 16px;
+    z-index: 10;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center; /* Center image in button */
+}
+.toggle-btn img {
+    height: 45px;
+    width: 45px;
+    display: block; /* Ensure image takes button size */
+}
+
+/* Year Links as Images */
+.year-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    z-index: 10; /* Ensure year images are above rings */
+    position: relative; /* For stacking context */
+}
+.year-link-image {
+    width: 120px; /* Adjust image size as needed */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer; /* Indicate it's clickable */
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+.year-link-image:hover {
+    transform: scale(1.1); /* Slight scale up on hover */
+}
+
+/* Logo Styling */
+.logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 120px;
+    z-index: 10; /* Ensure logo is above rings */
+}
+
+/* Contact Icons Styling */
+.contact-icons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10; /* Ensure contact icons are above rings */
+}
+.contact-icons img {
+    width: 180px;
+    margin: 5px;
+    animation: blink 1s infinite alternate;
+}
+@keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Ring Effects CSS */
+.ring {
+    position: fixed;
+    width: 800px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Rings behind content */
+}
+.ring i {
+    position: absolute;
+    inset: 0;
+    border: 6px solid #333; /* Default ring color is dark grey for light background (LIGHT MODE DEFAULT NOW) */
+    transition: all 0.5s ease;
+    border-color: #333; /* Ensure default color is set for light mode */
+}
+.dark-mode .ring i {
+    border-color: #fff; /* Rings are white in dark mode */
+}
+.ring i:nth-child(1) {
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    animation: animate 6s linear infinite;
+}
+.ring i:nth-child(2) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate 4s linear infinite;
+}
+.ring i:nth-child(3) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate2 10s linear infinite;
+}
+@keyframes animate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes animate2 {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* ----------- MEDIA QUERIES FOR MOBILE RESPONSIVENESS ----------- */
+
+/* For screens smaller than 768px (typical tablets and phones) */
+@media screen and (max-width: 768px) {
+    .ring {
+        width: 600px; /* Rings are now DOUBLED in size for mobile */
+        height: 600px; /* Rings are now DOUBLED in size for mobile */
+    }
+    .ring i {
+        border-width: 6px; /* Keep default border width */
+    }
+    .logo {
+        width: 100px; /* Slightly smaller logo on mobile */
+    }
+    .year-container {
+        gap: 15px; /* Less gap between year images on mobile */
+    }
+    .year-link-image {
+        width: 100px; /* Slightly smaller year images on mobile */
+    }
+}
+
+/* For even smaller screens (phones, less than 480px wide) */
+@media screen and (max-width: 480px) {
+    .ring {
+        width: 400px; /* Rings are DOUBLED in size for very small mobile */
+        height: 400px; /* Rings are DOUBLED in size for very small mobile */
+    }
+    .ring i {
+        border-width: 5px; /* Keep slightly thinner border for smaller rings */
+    }
+    h1 {
+        font-size: 28px; /* Slightly smaller main heading on very small screens */
+    }
+    p {
+        font-size: 16px; /* Slightly smaller paragraph text */
+    }
+    .year-container {
+        gap: 10px; /* Even less gap on very small screens */
+    }
+    .year-link-image {
+        width: 80px; /* Even smaller year images on very small screens */
+    }
+}

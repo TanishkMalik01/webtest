@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Semester - 2020</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap"); /* Import font */
+
+        /* Reset and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif; /* Use Quicksand font */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4; /* Default light mode background */
+            color: black; /* Default light mode text color */
+            position: relative;
+            overflow: hidden; /* To contain rings */
+            transition: background 0.5s, color 0.5s; /* Smooth mode switch */
+
+            display: flex; /* Enable Flexbox */
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center; /* Vertically center content */
+            align-items: center; /* Horizontally center content */
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            margin: 0; /* Reset default body margin */
+        }
+        .dark-mode {
+            background-color: #111; /* Dark mode background */
+            color: white; /* Dark mode text color */
+        }
+        .container {
+            margin-top: 50px;
+            z-index: 10; /* Ensure container is above rings */
+            position: relative; /* For stacking context */
+        }
+        h1, p {
+            color: inherit; /* Inherit color from body for mode switch */
+        }
+
+        /* Toggle Button Styles */
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            background: #0078ff;
+            color: white;
+            border: none;
+            border-radius: 25%;
+            font-size: 16px;
+            z-index: 10;
+            display: flex;
+            width: 60px;
+            height: 60px;
+            align-items: center;
+            justify-content: center; /* Center image in button */
+        }
+        .toggle-btn img {
+            height: 45px;
+            width: 45px;
+            display: block; /* Ensure image takes button size */
+        }
+
+        /* Semester Links as Images */
+        .semester-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            z-index: 10; /* Ensure year images are above rings */
+            position: relative; /* For stacking context */
+        }
+        .semester-link-image {
+            width: 120px; /* Adjust image size as needed */
+            height: auto; /* Maintain aspect ratio */
+            cursor: pointer; /* Indicate it's clickable */
+            transition: transform 0.3s ease; /* Smooth hover effect */
+        }
+        .semester-link-image:hover {
+            transform: scale(1.1); /* Slight scale up on hover */
+        }
+
+        /* Logo Styling (Optional - Remove if not needed on this page) */
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 120px;
+            z-index: 10; /* Ensure logo is above rings */
+        }
+
+        /* Contact Icons Styling */
+        .contact-icons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10; /* Ensure contact icons are above rings */
+        }
+        .contact-icons img {
+            width: 180px;
+            margin: 5px;
+}
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Ring Effects CSS */
+        .ring {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1; /* Rings behind content */
+        }
+        .ring i {
+            position: absolute;
+            inset: 0;
+            border: 6px solid #333; /* Default ring color is dark grey for light background (LIGHT MODE DEFAULT NOW) */
+            transition: all 0.5s ease;
+            border-color: #333; /* Ensure default color is set for light mode */
+        }
+        .dark-mode .ring i {
+            border-color: #fff; /* Rings are white in dark mode */
+        }
+        .ring i:nth-child(1) {
+            border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+            animation: animate 6s linear infinite;
+        }
+        .ring i:nth-child(2) {
+            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+            animation: animate 4s linear infinite;
+        }
+        .ring i:nth-child(3) {
+            border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+            animation: animate2 10s linear infinite;
+        }
+        @keyframes animate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes animate2 {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* ----------- MEDIA QUERIES FOR MOBILE RESPONSIVENESS ----------- */
+
+        /* For screens smaller than 768px (typical tablets and phones) */
+        @media screen and (max-width: 768px) {
+            .ring {
+                width: 600px; /* Rings are now DOUBLED in size for mobile */
+                height: 600px; /* Rings are now DOUBLED in size for mobile */
+            }
+            .ring i {
+                border-width: 6px; /* Keep default border width */
+            }
+            .logo {
+                width: 100px; /* Slightly smaller logo on mobile */
+            }
+            .semester-container {
+                gap: 15px; /* Less gap between year images on mobile */
+            }
+            .semester-link-image {
+                width: 100px; /* Slightly smaller year images on mobile */
+            }
+        }
+
+        /* For even smaller screens (phones, less than 480px wide) */
+        @media screen and (max-width: 480px) {
+            .ring {
+                width: 400px; /* Rings are DOUBLED in size for very small mobile */
+                height: 400px; /* Rings are DOUBLED in size for very small mobile */
+            }
+            .ring i {
+                border-width: 5px; /* Keep slightly thinner border for smaller rings */
+            }
+            h1 {
+                font-size: 28px; /* Slightly smaller main heading on very small screens */
+            }
+            p {
+                font-size: 16px; /* Slightly smaller paragraph text */
+            }
+            .semester-container {
+                gap: 10px; /* Even less gap on very small screens */
+            }
+            .semester-link-image {
+                width: 80px; /* Even smaller year images on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="../../static/dark.png" alt="Dark Mode Icon">
+    </button>
+
+
+
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+
+    <div class="container">
+        <h1>Select Semester for 2019</h1>
+        <div class="semester-container">
+            <a href="semester/1/index.html"> <img src="../static/1.png" alt="Semester 1" class="semester-link-image" data-semester="1" id="semester-logo-1"></a>
+            <a href="semester/2/index.html"> <img src="../static/2.png" alt="Semester 2" class="semester-link-image" data-semester="2" id="semester-logo-2"></a>
+            <a href="semester/3/index.html"> <img src="../static/3.png" alt="Semester 3" class="semester-link-image" data-semester="3" id="semester-logo-3"></a>
+            <a href="semester/4/index.html"> <img src="../static/4.png" alt="Semester 4" class="semester-link-image" data-semester="4" id="semester-logo-4"></a>
+            <a href="semester/5/index.html"> <img src="../static/5.png" alt="Semester 5" class="semester-link-image" data-semester="5" id="semester-logo-5"></a>
+            <a href="semester/6/index.html"> <img src="../static/6.png" alt="Semester 6" class="semester-link-image" data-semester="6" id="semester-logo-6"></a>
+            <a href="semester/7/index.html"> <img src="../static/7.png" alt="Semester 7" class="semester-link-image" data-semester="7" id="semester-logo-7"></a>
+            <a href="semester/8/index.html"> <img src="../static/8.png" alt="Semester 8" class="semester-link-image" data-semester="8" id="semester-logo-8"></a>
+        </div>
+    </div>
+
+    <div class="contact-icons">
+        <a href="https://t.me/+cCvyEgOpYeNkMzI1">
+            <img id="telegram-link" src="../../static/telegram.png" alt="Telegram">
+        </a>
+    </div>  
+
+    <script>
+        const rings = document.querySelectorAll('.ring i');
+        const ringContainer = document.querySelector('.ring');
+        const body = document.body;
+        const semesterLogos = document.querySelectorAll('.semester-link-image');
+        const modeIcon = document.getElementById('mode-icon'); // Get modeIcon here for easier access
+
+
+        function toggleDarkMode() {
+            body.classList.toggle("dark-mode");
+            const isDarkModeEnabled = body.classList.contains("dark-mode");
+            console.log("toggleDarkMode function CALLED");
+
+            // Store dark mode preference in Local Storage
+            if (isDarkModeEnabled) {
+                localStorage.setItem('darkMode', 'enabled');
+                modeIcon.src = "../static/light.png";
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                modeIcon.src = "../static/dark.png";
+            }
+
+            updateRingColors(isDarkModeEnabled);
+            updateSemesterLogos(isDarkModeEnabled);
+            updateTelegramIcon(isDarkModeEnabled);
+        }
+
+        function updateRingColors(isDarkMode) {
+            rings.forEach(ring => {
+                ring.style.borderColor = isDarkMode ? '#fff' : '#333';
+                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+            });
+        }
+
+        function updateSemesterLogos(isDarkMode) {
+            semesterLogos.forEach(logoImage => {
+                let logoNumber = logoImage.dataset.semester;
+                if (isDarkMode) {
+                    logoImage.src = `/static/${logoNumber}-dark.png`; // **Corrected path: ../static/**
+                } else {
+                    logoImage.src = `/static/${logoNumber}.png`;     // **Corrected path: ../static/**
+                }
+            });
+        }
+        function updateTelegramIcon(isDarkMode){
+            console.log("updateTelegramIcon function CALLED. isDarkMode:", isDarkMode);
+            const telegramIcon = document.getElementById('telegram-link');
+            if (telegramIcon) {
+                console.log("telegramIcon element FOUND:", telegramIcon);
+                if (isDarkMode) {
+                    telegramIcon.src = `../../static/telegram-dark.png`; // Paths for Live Server
+                    console.log("Telegram Icon SRC set to DARK mode path:", telegramIcon.src);
+                } else {
+                    telegramIcon.src = `../../static/telegram.png`;      // Paths for Live Server
+                    console.log("Telegram Icon SRC set to LIGHT mode path:", telegramIcon.src);
+                }
+            } else {
+                console.error("Error: telegramIcon element NOT FOUND!");
+            }
+        }
+
+        // --------  PERSISTENT DARK MODE LOGIC (NEW!) --------
+        function applyStoredDarkModePreference() {
+            const storedDarkMode = localStorage.getItem('darkMode');
+
+            if (storedDarkMode === 'enabled') {
+                body.classList.add("dark-mode");
+                modeIcon.src = "../static/light.png";
+                updateRingColors(true);
+                updateSemesterLogos(true);
+                updateTelegramIcon(true); 
+
+            } else {
+                modeIcon.src = "../static/dark.png";
+                updateRingColors(false);
+                updateSemesterLogos(false);
+                updateTelegramIcon(false); 
+            }
+        }
+
+        applyStoredDarkModePreference(); // Call on page load
+        // -------- END PERSISTENT DARK MODE LOGIC --------
+
+
+        updateRingColors(body.classList.contains('dark-mode')); // Initialize ring colors
+        updateSemesterLogos(body.classList.contains('dark-mode')); // Initialize semester logos on page load!
+
+
+        document.addEventListener('mousemove', (e) => {
+            const rect = ringContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width/2;
+            const centerY = rect.top + rect.height/2;
+            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
+            const radius = rect.width/2;
+
+            rings.forEach(ring => {
+                if (distance <= radius) {
+                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
+                    ring.style.borderColor = clr;
+                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
+                } else {
+                    updateRingColors(body.classList.contains('dark-mode'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

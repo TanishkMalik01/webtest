@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1 - 2019 Question Papers</title>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Quicksand", sans-serif;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        min-height: 100vh;
+        background: #111;
+        color:white;
+        width: 100%;
+        text-align: center;
+        /* Keep overflow hidden for the body to manage rings, but PDF container will scroll */
+        transition: background 0.5s, color 0.5s;
+        position: relative;
+    }
+    .dark-mode {
+        background: #fff;
+        color: black;
+    }
+    .toggle-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        background: #0078ff;
+        color: white;
+        border: none;
+        border-radius: 25%;
+        font-size: 16px;
+        z-index: 10;
+        display: flex;
+        width: 60px;
+        height: 60px;
+        align-items: center;
+    }
+    .toggle-btn img {
+        height: 45px;
+        width: 45px;
+        display: flex;
+    }
+    .ring {
+        position: fixed;
+        width: 800px;
+        height: 800px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+    .ring i {
+        position: absolute;
+        inset: 0;
+        border: 6px solid #fff; /* Default ring color in dark mode is white */
+        transition: all 0.5s ease;
+        border-color: #fff; /* ADDED: Default border color for visibility */
+    }
+    .dark-mode .ring i {
+        border-color: black; /* CORRECTED: Rings are BLACK in LIGHT mode */
+    }
+    .ring i:nth-child(1) {
+        border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+        animation: animate 6s linear infinite;
+    }
+    .ring i:nth-child(2) {
+        border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+        animation: animate 4s linear infinite;
+    }
+    .ring i:nth-child(3) {
+        border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+        animation: animate2 10s linear infinite;
+    }
+    @keyframes animate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    @keyframes animate2 {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+    }
+    .container {
+        z-index: 10;
+        position: relative;
+    }
+    .pdf-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+        z-index: 10;
+        max-width: 900px;
+        width: 90%;
+        margin-left: 50px; 
+        
+    }
+    .pdf-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+        padding: 10px;
+        transition: color 0.5s;
+        flex-basis: calc(33.33% - 30px);
+        max-width: calc(33.33% - 30px);
+        box-sizing: border-box;
+    }
+    .dark-mode .pdf-item {
+        color: #111; /* Dark mode text color */
+    }
+    .pdf-icon {
+        width: 70px;
+        height: 70px;
+        transition: filter 0.5s;
+    }
+    .dark-mode .pdf-icon {
+        filter: invert(1);
+    }
+    /* Style for the main headings */
+    .container h1 {
+        font-size: 50px;
+    }
+    .container p {
+        font-size: 30px;
+    }
+</style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    <div class="container">
+        <h1>Semester 3</h1>
+        <br/>
+        <br/>
+        <h1>2019 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container">
+            </div>
+    </div>
+    <script>
+        const pdfFiles = [
+            { name: "BASIC-ELECTRICAL-ENGG", file: "BASIC-ELECTRICAL-ENGG.-KEE-101.pdf" },
+            { name: "COMPUTER-SYSTEM-SECURITY-KNC-301", file: "COMPUTER-SYSTEM-SECURITY-KNC-301.pdf" },
+            { name: "DATA-STRUCTURES-KCS-301", file: "DATA-STRUCTURES-KCS-301.pdf" },
+            { name: "DIGITAL-SYSTEM-DESIGN-KEC-302", file: "DIGITAL-SYSTEM-DESIGN-KEC-302.pdf" },
+            { name: "DISCRETE-STRUCTURES-THEORY-OF-LOGIC-KCS-303", file: "DISCRETE-STRUCTURES-THEORY-OF-LOGIC-KCS-303.pdf" },
+            { name: "ELECTRONIC-DEVICES-KEC-301", file: "ELECTRONIC-DEVICES-KEC-301.pdf" },
+            { name: "ELECTRONICS-ENGINEERING-KOE-038", file: "ELECTRONICS-ENGINEERING-KOE-038.pdf" },
+            { name: "ENGINEERING-MECHANICS-KCE-301", file: "ENGINEERING-MECHANICS-KCE-301.pdf" },
+            { name: "FLUID-MECHANICS-FLUID-MACHINES-KME-302", file: "FLUID-MECHANICS-FLUID-MACHINES-KME-302.pdf" },
+            { name: "FLUID-MECHANICS-KCE-303", file: "FLUID-MECHANICS-KCE-303.pdf" },
+            { name: "MATERIALS-ENGINEERING-KME-303", file: "MATERIALS-ENGINEERING-KME-303.pdf" },
+            { name: "MATHEMATICS-IV-KAS-302", file: "MATHEMATICS-IV-KAS-302.pdf" },
+            { name: "NETWORK-ANALYSIS-SYNTHESIS-KEC-303", file: "NETWORK-ANALYSIS-SYNTHESIS-KEC-303.pdf" },
+            { name: "PYTHON-PROGRAMMING-KNC-302", file: "PYTHON-PROGRAMMING-KNC-302.pdf" },
+            { name: "SENSOR-AND-INSTRUMENTATION-KOE-034", file: "SENSOR-AND-INSTRUMENTATION-KOE-034.pdf" },
+            { name: "SURVEYING-GEOMATICS-KCE-302", file: "SURVEYING-GEOMATICS-KCE-302.pdf" },
+            { name: "TECHNICAL-COMMUNICATION-KAS-301", file: "TECHNICAL-COMMUNICATION-KAS-301.pdf" },
+            { name: "THERMODYNAMICS-KME-301", file: "THERMODYNAMICS-KME-301.pdf" },
+            { name: "UNIVERSAL-HUMAN-VALUES-KVE-301", file: "UNIVERSAL-HUMAN-VALUES-KVE-301.pdf" },
+        ];
+    
+        const pdfContainer = document.querySelector('.pdf-container');
+    
+        pdfFiles.forEach(pdf => {
+            const pdfLink = document.createElement('a');
+            pdfLink.href = pdf.file;
+            pdfLink.classList.add('pdf-item');
+    
+            const pdfIcon = document.createElement('img');
+            pdfIcon.src = "/static/image.png";
+            pdfIcon.alt = "PDF Icon";
+            pdfIcon.classList.add('pdf-icon');
+    
+            const pdfNameSpan = document.createElement('span');
+            pdfNameSpan.textContent = pdf.name;
+    
+            pdfLink.appendChild(pdfIcon);
+            pdfLink.appendChild(pdfNameSpan);
+    
+            pdfContainer.appendChild(pdfLink);
+        });
+    
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle("dark-mode");
+            const modeIcon = document.getElementById('mode-icon');
+            modeIcon.src = body.classList.contains("dark-mode") ? "/static/light.png" : "/static/dark.png";
+    
+            const pdfIcons = document.querySelectorAll('.pdf-icon');
+            pdfIcons.forEach(icon => {
+                icon.style.filter = body.classList.contains("dark-mode") ? 'invert(1)' : 'invert(0)';
+            });
+    
+            updateRingColors(body.classList.contains("dark-mode"));
+        }
+    
+        const rings = document.querySelectorAll('.ring i');
+        const ringContainer = document.querySelector('.ring');
+    
+        function updateRingColors(isDarkMode) {
+            rings.forEach(ring => {
+                ring.style.borderColor = isDarkMode ? '#fff' : '#000';
+                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+            });
+        }
+    
+        updateRingColors(false);
+    
+        document.addEventListener('mousemove', (e) => {
+            const body = document.body;
+            const rect = ringContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width/2;
+            const centerY = rect.top + rect.height/2;
+            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
+            const radius = rect.width/2;
+    
+            rings.forEach(ring => {
+                if (distance <= radius) {
+                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
+                    ring.style.borderColor = clr;
+                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
+                } else {
+                    ring.style.borderColor = body.classList.contains("dark-mode") ? '#000' : 'white';
+                    ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
