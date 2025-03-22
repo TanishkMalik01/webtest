@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Question Papers</title>
 
-        <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        /* Add this style to pull the container up and prevent overlap */
+        .container {
+            margin-top: -100px; /* Adjust this value as needed */
+            /* Add other necessary styles */
+        }
 
+        /* Adjust ring container to improve mobile spacing */
+        .ring {
+            margin-bottom: 50px; /* Add space below the ring */
+        }
 
+        /* Adjust contact icons position */
+        .contact-icons {
+            margin-top: 50px; /* Add space above the contact icons */
+        }
+    </style>
 </head>
 <body>
 
     <button class="toggle-btn" onclick="toggleDarkMode()">
         <img id="mode-icon" src="static/dark.png" alt="Dark Mode Icon">
     </button>
-
-    <!-- <img src="static/top-secret.png" alt="Logo" class="logo"> -->
 
     <div class="ring">
         <i style="--clr:#00ff0a;"></i>
@@ -41,98 +54,91 @@
 
     <script>
         const rings = document.querySelectorAll('.ring i');
-const ringContainer = document.querySelector('.ring');
-const body = document.body;
-const yearLogos = document.querySelectorAll('.year-link-image');
-const telegramIcon = document.getElementById('telegram-icon');
-const modeIcon = document.getElementById('mode-icon'); // Get modeIcon here for easier access
+        const ringContainer = document.querySelector('.ring');
+        const body = document.body;
+        const yearLogos = document.querySelectorAll('.year-link-image');
+        const telegramIcon = document.getElementById('telegram-icon');
+        const modeIcon = document.getElementById('mode-icon');
 
+        function toggleDarkMode() {
+            body.classList.toggle("dark-mode");
+            const isDarkModeEnabled = body.classList.contains("dark-mode");
 
-function toggleDarkMode() {
-    body.classList.toggle("dark-mode");
-    const isDarkModeEnabled = body.classList.contains("dark-mode"); // Check if dark mode is now enabled
+            if (isDarkModeEnabled) {
+                localStorage.setItem('darkMode', 'enabled');
+                modeIcon.src = "static/light.png";
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                modeIcon.src = "static/dark.png";
+            }
 
-    // Store dark mode preference in Local Storage
-    if (isDarkModeEnabled) {
-        localStorage.setItem('darkMode', 'enabled'); // Save 'enabled' if dark mode is ON
-        modeIcon.src = "static/light.png"; // Update icon to light mode icon
-    } else {
-        localStorage.setItem('darkMode', 'disabled'); // Save 'disabled' if dark mode is OFF
-        modeIcon.src = "static/dark.png"; // Update icon to dark mode icon
-    }
-
-    updateRingColors(isDarkModeEnabled);
-    updateYearLogos(isDarkModeEnabled);
-    updateTelegramIcon(isDarkModeEnabled);
-}
-
-function updateRingColors(isDarkMode) {
-    rings.forEach(ring => {
-        ring.style.borderColor = isDarkMode ? '#fff' : '#333';
-        ring.style.filter = 'drop-shadow(0 0 0 transparent)';
-    });
-}
-
-function updateYearLogos(isDarkMode) {
-    yearLogos.forEach(logoImage => {
-        let yearNumber = logoImage.dataset.year;
-        if (isDarkMode) {
-            logoImage.src = `static/${yearNumber}-dark.png`;
-        } else {
-            logoImage.src = `static/${yearNumber}.png`;
+            updateRingColors(isDarkModeEnabled);
+            updateYearLogos(isDarkModeEnabled);
+            updateTelegramIcon(isDarkModeEnabled);
         }
-    });
-}
 
-function updateTelegramIcon(isDarkMode) {
-    if (isDarkMode) {
-        telegramIcon.src = 'static/telegram-dark.png';
-    } else {
-        telegramIcon.src = 'static/telegram.png';
-    }
-}
-
-// --------  PERSISTENT DARK MODE LOGIC (NEW!) --------
-function applyStoredDarkModePreference() {
-    const storedDarkMode = localStorage.getItem('darkMode'); // Check Local Storage
-
-    if (storedDarkMode === 'enabled') { // If dark mode was previously enabled
-        body.classList.add("dark-mode"); // Apply dark mode class
-        modeIcon.src = "static/light.png"; // Set icon to light mode
-        updateRingColors(true); // Update rings for dark mode
-        updateYearLogos(true); // Update year logos for dark mode
-        updateTelegramIcon(true); // Update Telegram icon for dark mode
-    } else {
-        // If 'darkMode' is not 'enabled' in Local Storage (or not set at all),
-        // default to light mode (which is already the initial state in CSS)
-        modeIcon.src = "static/dark.png"; // Ensure icon is set to dark mode icon for light mode default
-        updateRingColors(false); // Ensure rings are set for light mode
-        updateYearLogos(false); // Ensure year logos are set for light mode
-        updateTelegramIcon(false); // Ensure Telegram icon is set for light mode
-    }
-}
-
-applyStoredDarkModePreference(); // Call this function when the page loads to check and apply preference
-// -------- END PERSISTENT DARK MODE LOGIC --------
-
-
-document.addEventListener('mousemove', (e) => {
-    const rect = ringContainer.getBoundingClientRect();
-    const centerX = rect.left + rect.width/2;
-    const centerY = rect.top + rect.height/2;
-    const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
-    const radius = rect.width/2;
-
-    rings.forEach(ring => {
-        if (distance <= radius) {
-            const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
-            ring.style.borderColor = clr;
-            ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
-        } else {
-            updateRingColors(body.classList.contains('dark-mode'));
+        function updateRingColors(isDarkMode) {
+            rings.forEach(ring => {
+                ring.style.borderColor = isDarkMode ? '#fff' : '#333';
+                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+            });
         }
-    });
-});
+
+        function updateYearLogos(isDarkMode) {
+            yearLogos.forEach(logoImage => {
+                let yearNumber = logoImage.dataset.year;
+                if (isDarkMode) {
+                    logoImage.src = `static/${yearNumber}-dark.png`;
+                } else {
+                    logoImage.src = `static/${yearNumber}.png`;
+                }
+            });
+        }
+
+        function updateTelegramIcon(isDarkMode) {
+            if (isDarkMode) {
+                telegramIcon.src = 'static/telegram-dark.png';
+            } else {
+                telegramIcon.src = 'static/telegram.png';
+            }
+        }
+
+        function applyStoredDarkModePreference() {
+            const storedDarkMode = localStorage.getItem('darkMode');
+
+            if (storedDarkMode === 'enabled') {
+                body.classList.add("dark-mode");
+                modeIcon.src = "static/light.png";
+                updateRingColors(true);
+                updateYearLogos(true);
+                updateTelegramIcon(true);
+            } else {
+                modeIcon.src = "static/dark.png";
+                updateRingColors(false);
+                updateYearLogos(false);
+                updateTelegramIcon(false);
+            }
+        }
+
+        applyStoredDarkModePreference();
+
+        document.addEventListener('mousemove', (e) => {
+            const rect = ringContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
+            const radius = rect.width / 2;
+
+            rings.forEach(ring => {
+                if (distance <= radius) {
+                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
+                    ring.style.borderColor = clr;
+                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
+                } else {
+                    updateRingColors(body.classList.contains('dark-mode'));
+                }
+            });
+        });
     </script>
 </body>
 </html>
