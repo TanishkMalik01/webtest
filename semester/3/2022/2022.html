@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 2 - 2018 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+        
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 3</h1>
+        <br/><br/>
+        <h1>2022-23 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+       
+const pdfFiles = [
+{ name: "ANALOG-ELECTRONICS-KOE-037", file: "ANALOG-ELECTRONICS-KOE-037.pdf" },
+{ name: "BASIC-DATA-STRUCTURE-ALGORITHMS-KOE-035", file: "BASIC-DATA-STRUCTURE-ALGORITHMS-KOE-035.pdf" },     
+{ name: "BASIC-SIGNALS-SYSTEMS-KEE-303", file: "BASIC-SIGNALS-SYSTEMS-KEE-303.pdf" },
+{ name: "COMPUTER-ORGANIZATION-AND-ARCHITECTURE-KCS-302", file: "COMPUTER-ORGANIZATION-AND-ARCHITECTURE-KCS-302.pdf" },
+{ name: "COMPUTER-SYSTEM-SECURITY-KNC-301", file: "COMPUTER-SYSTEM-SECURITY-KNC-301.pdf" },
+{ name: "DATA-STRUCTURE-KCS-301", file: "DATA-STRUCTURE-KCS-301.pdf" },
+{ name: "DIGITAL-ELECTRONICS-KOE-039", file: "DIGITAL-ELECTRONICS-KOE-039.pdf" },
+{ name: "DIGITAL-SYSTEM-DESIGN-KEC-302", file: "DIGITAL-SYSTEM-DESIGN-KEC-302.pdf" },
+{ name: "DISCRETE-STRUCTURES-THEORY-OF-LOGIC-KCS-303", file: "DISCRETE-STRUCTURES-THEORY-OF-LOGIC-KCS-303.pdf" },
+{ name: "ELECTRICAL-MEASUREMENTS-INSTRUMENTATION-KEE-302", file: "ELECTRICAL-MEASUREMENTS-INSTRUMENTATION-KEE-302.pdf" },
+{ name: "ELECTROMAGNETIC-FIELD-THEORY-KEE-301", file: "ELECTROMAGNETIC-FIELD-THEORY-KEE-301.pdf" },
+{ name: "ELECTRONIC-DEVICES-KEC-301", file: "ELECTRONIC-DEVICES-KEC-301.pdf" },
+{ name: "ELECTRONICS-ENGINEERING-KOE-038", file: "ELECTRONICS-ENGINEERING-KOE-038.pdf" },
+{ name: "ENERGY-SCIENCE-AND-ENGINEERING-KOE-033", file: "ENERGY-SCIENCE-AND-ENGINEERING-KOE-033.pdf" },       
+{ name: "ENGINEERING-MECHANICS-KCE-301", file: "ENGINEERING-MECHANICS-KCE-301.pdf" },
+{ name: "ENGINEERING-MECHANICS-KOE-031", file: "ENGINEERING-MECHANICS-KOE-031.pdf" },
+{ name: "FLUID-MECHANICS-AND-FLUID-MACHINES-KME-302", file: "FLUID-MECHANICS-AND-FLUID-MACHINES-KME-302.pdf" },
+{ name: "FLUID-MECHANICS-KCE-303", file: "FLUID-MECHANICS-KCE-303.pdf" },
+{ name: "INTRODUCTION-TO-SOFT-COMPUTING-KOE-036", file: "INTRODUCTION-TO-SOFT-COMPUTING-KOE-036.pdf" },       
+{ name: "MATERIAL-SCIENCE-KOE-032", file: "MATERIAL-SCIENCE-KOE-032.pdf" },
+{ name: "MATERIALS-ENGINEERING-KME-303", file: "MATERIALS-ENGINEERING-KME-303.pdf" },
+{ name: "MATHEMATICS-III-KAS-303", file: "MATHEMATICS-III-KAS-303.pdf" },
+{ name: "MATHEMATICS-IV-KAS-302", file: "MATHEMATICS-IV-KAS-302.pdf" },
+{ name: "MATHEMATICS-V-KAS-304", file: "MATHEMATICS-V-KAS-304.pdf" },
+{ name: "NETWORK-ANALYSIS-SYNTHESIS-KEC-303", file: "NETWORK-ANALYSIS-SYNTHESIS-KEC-303.pdf" },
+{ name: "PYTHON-PROGRAMMING-KNC-302", file: "PYTHON-PROGRAMMING-KNC-302.pdf" },
+{ name: "SENSOR-AND-INSTRUMENTATION-KOE-034", file: "SENSOR-AND-INSTRUMENTATION-KOE-034.pdf" },
+{ name: "SURVEYING-AND-GEOMETICS-KCE-302", file: "SURVEYING-AND-GEOMETICS-KCE-302.pdf" },
+{ name: "Technical-Communication-KAS-301", file: "Technical-Communication-KAS-301.pdf" },
+{ name: "THERMODYNAMICS-KME-301", file: "THERMODYNAMICS-KME-301.pdf" },
+{ name: "UNIVERSAL-HUMAN-VALUES-KVE-301", file: "UNIVERSAL-HUMAN-VALUES-KVE-301.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

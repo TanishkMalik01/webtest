@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 2 - 2018 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 3</h1>
+        <br/><br/>
+        <h1>2020-21 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+
+        const pdfFiles = [
+        { name: "COMPUTER-ORGANIZATION-AND-ARCHITECTURE-KCS-302-1", file: "COMPUTER-ORGANIZATION-AND-ARCHITECTURE-KCS-302-1.pdf" },
+        { name: "COMPUTER-SYSTEM-SECURITY-KNC-301-1", file: "COMPUTER-SYSTEM-SECURITY-KNC-301-1.pdf" },
+        { name: "DATA-STRUCTURES-KCS-301-1", file: "DATA-STRUCTURES-KCS-301-1.pdf" },
+        { name: "DIGITAL-SYSTEM-DESIGN-KEC-302-1", file: "DIGITAL-SYSTEM-DESIGN-KEC-302-1.pdf" },
+        { name: "FLUID-MECHANICS-FLUID-MACHINES-KME-302-1", file: "FLUID-MECHANICS-FLUID-MACHINES-KME-302-1.pdf" },   
+        { name: "MATERIALS-ENGINEERING-KME-303-1", file: "MATERIALS-ENGINEERING-KME-303-1.pdf" },
+        { name: "MATHEMATICS-IV-KAS-302-1", file: "MATHEMATICS-IV-KAS-302-1.pdf" },
+        { name: "NETWORK-ANALYSIS-AND-SYNTHESISKEC-303", file: "NETWORK-ANALYSIS-AND-SYNTHESISKEC-303.pdf" },
+        { name: "PYTHON-PROGRAMMING-KNC-302-1", file: "PYTHON-PROGRAMMING-KNC-302-1.pdf" },
+        { name: "SENSOR-AND-INSTRUMENTATION-KOE-034-1", file: "SENSOR-AND-INSTRUMENTATION-KOE-034-1.pdf" },
+        { name: "TECHNICAL-COMMUNICATION-KAS-301-1", file: "TECHNICAL-COMMUNICATION-KAS-301-1.pdf" },
+        { name: "THERMODYNAMICS-KME-301-1", file: "THERMODYNAMICS-KME-301-1.pdf" },
+        { name: "UNIVERSAL-HUMAN-VALUES-AND-ETHICS-KVE-301", file: "UNIVERSAL-HUMAN-VALUES-AND-ETHICS-KVE-301.pdf" }, 
+      ];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

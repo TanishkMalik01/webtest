@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 5 - 2020 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 5</h1>
+        <br/><br/>
+        <h1>2020-21 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+       
+const pdfFiles = [
+{ name: "ADVANCED-WELDING-KME-055", file: "ADVANCED-WELDING-KME-055.pdf" },
+{ name: "AIR-AND-NOISE-POLLUTION-CONTROL-KCE-057", file: "AIR-AND-NOISE-POLLUTION-CONTROL-KCE-057.pdf" },     
+{ name: "COMPILER-DESIGN-KCS-502", file: "COMPILER-DESIGN-KCS-502.pdf" },
+{ name: "CONCRETE-TECHNOLOGY-KCE-051", file: "CONCRETE-TECHNOLOGY-KCE-051.pdf" },
+{ name: "CONSTITUTION-OF-INDIA-LAW-AND-ENGINEERING-KNC-501", file: "CONSTITUTION-OF-INDIA-LAW-AND-ENGINEERING-KNC-501.pdf" },
+{ name: "DATA-ANALYTICS-KCS-051", file: "DATA-ANALYTICS-KCS-051.pdf" },
+{ name: "DATABASE-MANAGEMENT-SYSTEM-KCS-501", file: "DATABASE-MANAGEMENT-SYSTEM-KCS-501.pdf" },
+{ name: "DESIGN-AND-ANALYSIS-OF-ALGORITHM-KCS-503", file: "DESIGN-AND-ANALYSIS-OF-ALGORITHM-KCS-503.pdf" },   
+{ name: "DIGITAL-SIGNAL-PROCESSING-KEC-503", file: "DIGITAL-SIGNAL-PROCESSING-KEC-503.pdf" },
+{ name: "GEOTECHNICAL-ENGINEERING-KCE-501", file: "GEOTECHNICAL-ENGINEERING-KCE-501.pdf" },
+{ name: "HEAT-MASS-TRANSFER-KME-501", file: "HEAT-MASS-TRANSFER-KME-501.pdf" },
+{ name: "I-C-ENGINES-FUELS-AND-LUBRICATIONS-KME-054", file: "I-C-ENGINES-FUELS-AND-LUBRICATIONS-KME-054.pdf" },
+{ name: "INDUSTRIAL-ENGINEERING-KME-503", file: "INDUSTRIAL-ENGINEERING-KME-503.pdf" },
+{ name: "INTEGRATED-CIRCUITS-KEC-501", file: "INTEGRATED-CIRCUITS-KEC-501.pdf" },
+{ name: "MACHINE-LEARNING-TECHNIQUES-KCS-055", file: "MACHINE-LEARNING-TECHNIQUES-KCS-055.pdf" },
+{ name: "MICROPROCESSOR-AND-MICROCONTROLLER-KEC-502", file: "MICROPROCESSOR-AND-MICROCONTROLLER-KEC-502.pdf" },
+{ name: "OBJECT-ORIENTED-SYSTEM-DESIGN-KCS-054", file: "OBJECT-ORIENTED-SYSTEM-DESIGN-KCS-054.pdf" },
+{ name: "OPTICAL-COMMUNICATION-KEC-058", file: "OPTICAL-COMMUNICATION-KEC-058.pdf" },
+{ name: "QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT-KCE-503", file: "QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT-KCE-503.pdf" },
+{ name: "STRENGTH-OF-MATERIAL-KME-502", file: "STRENGTH-OF-MATERIAL-KME-502.pdf" },
+{ name: "STRUCTURAL-ANALYSIS-KCE-502", file: "STRUCTURAL-ANALYSIS-KCE-502.pdf" },
+{ name: "VLSI-TECHNOLOGY-KEC-053", file: "VLSI-TECHNOLOGY-KEC-053.pdf" },
+{ name: "WEB-TECHNOLOGY-KIT-501", file: "WEB-TECHNOLOGY-KIT-501.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

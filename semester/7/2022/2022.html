@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 7 -2022 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 7</h1>
+        <br/><br/>
+        <h1>2022-23 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+  { name: "ADDITIVE-MANUFACTURING-KME071", file: "ADDITIVE-MANUFACTURING-KME071.pdf" },
+  { name: "ADVANCED-CONCRETE-DESIGN-KCE073", file: "ADVANCED-CONCRETE-DESIGN-KCE073.pdf" },
+  { name: "ADVANCED-MICRO-PROCESSORS-MICRO-CONTROLLERS-KEE070", file: "ADVANCED-MICRO-PROCESSORS-MICRO-CONTROLLERS-KEE070.pdf" },
+  { name: "ARTIFICIAL-INTELLIGENCE-KCS071", file: "ARTIFICIAL-INTELLIGENCE-KCS071.pdf" },
+  { name: "BIOECONOMICS-KOE072-1", file: "BIOECONOMICS-KOE072-1.pdf" },
+  { name: "BIOECONOMICS-KOE072", file: "BIOECONOMICS-KOE072.pdf" },  
+  { name: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KCS714", file: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KCS714.pdf" },
+  { name: "CLOUD-COMPUTING-KCS713", file: "CLOUD-COMPUTING-KCS713.pdf" },
+  { name: "CRYPTOGRAPHY-NETWORK-SECURITY-KCS074", file: "CRYPTOGRAPHY-NETWORK-SECURITY-KCS074.pdf" },
+  { name: "DEEP-LEARNING-KCS078", file: "DEEP-LEARNING-KCS078.pdf" },
+  { name: "DESIGN-DEVELOPMENT-OF-APPLICATIONS-KCS075", file: "DESIGN-DEVELOPMENT-OF-APPLICATIONS-KCS075.pdf" },
+  { name: "DESIGN-OF-STEEL-STRUCTURES-KCE075", file: "DESIGN-OF-STEEL-STRUCTURES-KCE075.pdf" },
+  { name: "DESIGN-THINKING-KOE077", file: "DESIGN-THINKING-KOE077.pdf" },
+  { name: "DIGITAL-IMAGE-PROCESSING-KEC071", file: "DIGITAL-IMAGE-PROCESSING-KEC071.pdf" },
+  { name: "DISASTER-PREPAREDNESS-AND-MANAGEMENT-KCE079", file: "DISASTER-PREPAREDNESS-AND-MANAGEMENT-KCE079.pdf" },
+  { name: "DISTRIBUTED-SYSTEMS-KCS077", file: "DISTRIBUTED-SYSTEMS-KCS077.pdf" },
+  { name: "ELECTRIC-DRIVES-KEE075", file: "ELECTRIC-DRIVES-KEE075.pdf" },
+  { name: "ENERGY-CONSERVATION-AND-AUDITING-KEE071", file: "ENERGY-CONSERVATION-AND-AUDITING-KEE071.pdf" },
+  { name: "FILTER-DESIGN-KOE071", file: "FILTER-DESIGN-KOE071.pdf" },
+  { name: "GEOSYNTHETICS-AND-REINFORCED-SOIL-STRUCTURE-KCE077", file: "GEOSYNTHETICS-AND-REINFORCED-SOIL-STRUCTURE-KCE077.pdf" },
+  { name: "HIGH-PERFORMANCE-COMPUTING-KCS073", file: "HIGH-PERFORMANCE-COMPUTING-KCS073.pdf" },
+  { name: "HIGH-VOLTAGE-ENGINEERING-KEE073", file: "HIGH-VOLTAGE-ENGINEERING-KEE073.pdf" },
+  { name: "HVAC-SYSTEMS-KME072", file: "HVAC-SYSTEMS-KME072.pdf" },  
+  { name: "HVDC-AC-TRANSMISSION-KEE072", file: "HVDC-AC-TRANSMISSION-KEE072.pdf" },
+  { name: "INFORMATION-THEORY-CODING-KEC075", file: "INFORMATION-THEORY-CODING-KEC075.pdf" },
+  { name: "INTERNET-OF-THINGS-KCS712", file: "INTERNET-OF-THINGS-KCS712.pdf" },
+  { name: "INTRODUCTION-TO-WOMENs-AND-GENDER-STUDIES-KOE079", file: "INTRODUCTION-TO-WOMENs-AND-GENDER-STUDIES-KOE079.pdf" },
+  { name: "IRRIGATION-AND-WATER-RESOURCE-ENGINEERING-KCE078", file: "IRRIGATION-AND-WATER-RESOURCE-ENGINEERING-KCE078.pdf" },
+  { name: "MACHINE-LEARNING-KME074", file: "MACHINE-LEARNING-KME074.pdf" },
+  { name: "MACHINE-LEARNING-KOE073", file: "MACHINE-LEARNING-KOE073.pdf" },
+  { name: "MATHEMATICAL-MODELING-OF-MANUFACTURING-PROCESSES-KME073", file: "MATHEMATICAL-MODELING-OF-MANUFACTURING-PROCESSES-KME073.pdf" },
+  { name: "MICRO-SMART-SYSTEMS-KEC077", file: "MICRO-SMART-SYSTEMS-KEC077.pdf" },
+  { name: "MICROWAVE-RADAR-ENGINEERING-KEC074", file: "MICROWAVE-RADAR-ENGINEERING-KEC074.pdf" },
+  { name: "MOBILE-COMPUTING-KCS711", file: "MOBILE-COMPUTING-KCS711.pdf" },
+  { name: "NATURAL-LANGUAGE-PROCESSING-KCS072", file: "NATURAL-LANGUAGE-PROCESSING-KCS072.pdf" },
+  { name: "OPERATIONS-RESEARCH-KOE075", file: "OPERATIONS-RESEARCH-KOE075.pdf" },
+  { name: "OPTICAL-NETWORK-KEC073", file: "OPTICAL-NETWORK-KEC073.pdf" },
+  { name: "POWER-PLANT-ENGINEERING-KME076", file: "POWER-PLANT-ENGINEERING-KME076.pdf" },
+  { name: "POWER-QUALITY-AND-FACTS-KEE074", file: "POWER-QUALITY-AND-FACTS-KEE074.pdf" },
+  { name: "POWER-SYSTEM-DYNAMICS-AND-CONTROL-KEE076", file: "POWER-SYSTEM-DYNAMICS-AND-CONTROL-KEE076.pdf" },
+  { name: "POWER-SYSTEM-PROTECTION-KEE077", file: "POWER-SYSTEM-PROTECTION-KEE077.pdf" },
+  { name: "PROJECT-MANAGEMENT-ENTREPRENEURSHIP-KHU702", file: "PROJECT-MANAGEMENT-ENTREPRENEURSHIP-KHU702.pdf" },
+  { name: "QUANTUM-COMPUTING-KCS710", file: "QUANTUM-COMPUTING-KCS710.pdf" },
+  { name: "RAILWAY-WATERWAY-SND-AIRWAY-ENGINEERING-KCE070", file: "RAILWAY-WATERWAY-SND-AIRWAY-ENGINEERING-KCE070.pdf" },
+  { name: "RENEWABLE-ENERGY-RESOURCES-KOE074", file: "RENEWABLE-ENERGY-RESOURCES-KOE074.pdf" },
+  { name: "RURAL-DEVELOPMENT-ADMINISTRATION-PLANNING-KHU701", file: "RURAL-DEVELOPMENT-ADMINISTRATION-PLANNING-KHU701.pdf" },
+  { name: "SERVICE-ORIENTED-ARCHITECTURE-KCS079", file: "SERVICE-ORIENTED-ARCHITECTURE-KCS079.pdf" },
+  { name: "SOFT-WAREPROJECT-MANAGEMENT-KIT071", file: "SOFT-WAREPROJECT-MANAGEMENT-KIT071.pdf" },
+  { name: "SOFTWARE-TESTING-KCS076", file: "SOFTWARE-TESTING-KCS076.pdf" },
+  { name: "SOIL-WATER-CONSERVATION-ENGINEERING-KOE078", file: "SOIL-WATER-CONSERVATION-ENGINEERING-KOE078.pdf" },
+  { name: "SOILD-WASTE-MANAGEMENT-KCE074", file: "SOILD-WASTE-MANAGEMENT-KCE074.pdf" },
+  { name: "SPEECH-PROCESSING-KEC078", file: "SPEECH-PROCESSING-KEC078.pdf" },
+  { name: "SUBJECT-NAME-DEREGULATED-POWER-SYSTEM-KEE078", file: "SUBJECT-NAME-DEREGULATED-POWER-SYSTEM-KEE078.pdf" },
+  { name: "SUSTAINABLE-CONSTRUCTION-METHODS-KCE071", file: "SUSTAINABLE-CONSTRUCTION-METHODS-KCE071.pdf" },
+  { name: "URBAN-TRANSPORTATION-PLANNING-KCE076", file: "URBAN-TRANSPORTATION-PLANNING-KCE076.pdf" },
+  { name: "UTILIZATION-OF-ELECTRICAL-ENERGY-ELECTRIC-TRACTION-KEE079", file: "UTILIZATION-OF-ELECTRICAL-ENERGY-ELECTRIC-TRACTION-KEE079.pdf" },
+  { name: "VEHICLE-BODY-ENGINEERING-SAFETY-KAU073", file: "VEHICLE-BODY-ENGINEERING-SAFETY-KAU073.pdf" },
+  { name: "VISION-FOR-HUMAN-SOCIETY-KOE076", file: "VISION-FOR-HUMAN-SOCIETY-KOE076.pdf" },
+  { name: "VLSI-DESIGN-KEC072", file: "VLSI-DESIGN-KEC072.pdf" },    
+  { name: "WIRELESS-AND-MOBILE-COMMUNICATION-KEC076", file: "WIRELESS-AND-MOBILE-COMMUNICATION-KEC076.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 6 - 2022 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 6</h1>
+        <br/><br/>
+        <h1>2022-23 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+        { name: "ADVANCE-STRUCTURAL-ANALYSIS-KCE-061", file: "ADVANCE-STRUCTURAL-ANALYSIS-KCE-061.pdf" },
+        { name: "ADVANCED-MACHINE-LEARNING-KML-061", file: "ADVANCED-MACHINE-LEARNING-KML-061.pdf" },
+        { name: "ANALOG-SIGNAL-PROCESSING-KEC-064", file: "ANALOG-SIGNAL-PROCESSING-KEC-064.pdf" },
+        { name: "ANTENNA-AND-WAVE-PROPAGATION-KEC-603", file: "ANTENNA-AND-WAVE-PROPAGATION-KEC-603.pdf" },
+        { name: "ARTIFICIAL-INTELLIGENCE-KOT-063", file: "ARTIFICIAL-INTELLIGENCE-KOT-063.pdf" },
+        { name: "BASICS-OF-DATA-BASE-MANAGEMENT-SYSTEM-KOE-067", file: "BASICS-OF-DATA-BASE-MANAGEMENT-SYSTEM-KOE-067.pdf" },
+        { name: "BIG-DATA-AND-ANALYTICS-KDS-601", file: "BIG-DATA-AND-ANALYTICS-KDS-601.pdf" },
+        { name: "BIG-DATA-KCS-061", file: "BIG-DATA-KCS-061.pdf" },
+        { name: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KIT-061", file: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KIT-061.pdf" },       
+        { name: "COMPUTER-BASED-NUMERICAL-TECHNIQUES-KOE-065", file: "COMPUTER-BASED-NUMERICAL-TECHNIQUES-KOE-065.pdf" },
+        { name: "COMPUTER-NETWORKS-KCS-603", file: "COMPUTER-NETWORKS-KCS-603.pdf" },
+        { name: "CONSTITUTION-OF-INDIA-LAW-ENGINEERING-KNC-601", file: "CONSTITUTION-OF-INDIA-LAW-ENGINEERING-KNC-601.pdf" },
+        { name: "CONTROL-SYSTEM-KEC-602", file: "CONTROL-SYSTEM-KEC-602.pdf" },
+        { name: "DATA-ANALYTICS-KIT-601", file: "DATA-ANALYTICS-KIT-601.pdf" },
+        { name: "DATA-COMMUNICATION-NETWORKS-KEC-063", file: "DATA-COMMUNICATION-NETWORKS-KEC-063.pdf" },
+        { name: "DATA-COMPRESSION-KCS-064", file: "DATA-COMPRESSION-KCS-064.pdf" },
+        { name: "DESIGN-OF-CONCRETE-STRUCTURES-KCE-601", file: "DESIGN-OF-CONCRETE-STRUCTURES-KCE-601.pdf" },
+        { name: "DIGITAL-COMMUNICATION-KEC-601", file: "DIGITAL-COMMUNICATION-KEC-601.pdf" },
+        { name: "DIGITAL-CONTROL-SYSTEM-KEE-063", file: "DIGITAL-CONTROL-SYSTEM-KEE-063.pdf" },
+        { name: "ELECTRIC-AND-HYBRID-VEHICLES-KEE-064", file: "ELECTRIC-AND-HYBRID-VEHICLES-KEE-064.pdf" },
+        { name: "EMBEDDED-SYSTEM-KOE-062", file: "EMBEDDED-SYSTEM-KOE-062.pdf" },
+        { name: "ENVIRONMENTAL-ENGINEERING-KCE-603", file: "ENVIRONMENTAL-ENGINEERING-KCE-603.pdf" },
+        { name: "FOUNDATION-DESIGN-KCE-064", file: "FOUNDATION-DESIGN-KCE-064.pdf" },
+        { name: "GIS-REMOTE-SENSING-KOE-066", file: "GIS-REMOTE-SENSING-KOE-066.pdf" },
+        { name: "IMAGE-ANALYTICS-KDS-061", file: "IMAGE-ANALYTICS-KDS-061.pdf" },
+        { name: "IMAGE-PROCESSING-KCS-062", file: "IMAGE-PROCESSING-KCS-062.pdf" },
+        { name: "INDIAN-TRADITIONS-CULTURE-AND-SOCIETY-KNC-602", file: "INDIAN-TRADITIONS-CULTURE-AND-SOCIETY-KNC-602.pdf" },
+        { name: "INTRODUCTION-TO-MEMS-KOE-063", file: "INTRODUCTION-TO-MEMS-KOE-063.pdf" },
+        { name: "IOT-ARCHITECTURE-AND-PROTOCOLS-KOT-601", file: "IOT-ARCHITECTURE-AND-PROTOCOLS-KOT-601.pdf" },       
+        { name: "MACHINE-DESIGN-KME-602", file: "MACHINE-DESIGN-KME-602.pdf" },
+        { name: "MACHINE-LEARNING-TECHNIQUES-KAI-601", file: "MACHINE-LEARNING-TECHNIQUES-KAI-601.pdf" },
+        { name: "MICROCONTROLLERS-EMBEDDED-SYSTEM-KEC-061", file: "MICROCONTROLLERS-EMBEDDED-SYSTEM-KEC-061.pdf" },   
+        { name: "OBJECT-ORIENTED-PROGRAMMING-KOE-064", file: "OBJECT-ORIENTED-PROGRAMMING-KOE-064.pdf" },
+        { name: "POWER-ELECTRONICS-KEE-603", file: "POWER-ELECTRONICS-KEE-603.pdf" },
+        { name: "POWER-SYSTEM-II-KEE-601", file: "POWER-SYSTEM-II-KEE-601.pdf" },
+        { name: "REAL-TIME-SYSTEM-KCS-063", file: "REAL-TIME-SYSTEM-KCS-063.pdf" },
+        { name: "REAL-TIME-SYSTEMS-KOE-061", file: "REAL-TIME-SYSTEMS-KOE-061.pdf" },
+        { name: "REFRIGERATION-AND-AIR-CONDITIONING-KME-601", file: "REFRIGERATION-AND-AIR-CONDITIONING-KME-601.pdf" },
+        { name: "REPAIR-AND-REHABILATION-OF-STRUCTURE-KCE-063", file: "REPAIR-AND-REHABILATION-OF-STRUCTURE-KCE-063.pdf" },
+        { name: "RIVER-ENGINEERING-KCE-062", file: "RIVER-ENGINEERING-KCE-062.pdf" },
+        { name: "SATELLITE-COMMUNICATION-KEC-062", file: "SATELLITE-COMMUNICATION-KEC-062.pdf" },
+        { name: "SOFTWARE-ENGINEERING-KCS-601", file: "SOFTWARE-ENGINEERING-KCS-601.pdf" },
+        { name: "SOFTWARE-ENGINEERING-KDS-063", file: "SOFTWARE-ENGINEERING-KDS-063.pdf" },
+        { name: "SOFTWARE-PROJECT-MANAGEMENT-KOE-068", file: "SOFTWARE-PROJECT-MANAGEMENT-KOE-068.pdf" },
+        { name: "SPECIAL-ELECTRICAL-MACHINES-KEE-061", file: "SPECIAL-ELECTRICAL-MACHINES-KEE-061.pdf" },
+        { name: "THEORY-OF-MACHINE-KME-603", file: "THEORY-OF-MACHINE-KME-603.pdf" },
+        { name: "TOOL-DESIGN-KME-604", file: "TOOL-DESIGN-KME-604.pdf" },
+        { name: "TRANSPORATION-ENGINEERING-KCE-602", file: "TRANSPORATION-ENGINEERING-KCE-602.pdf" },
+        { name: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-ITS-FULFILLMENT-KOE-069", file: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-ITS-FULFILLMENT-KOE-069.pdf" },
+        { name: "WEB-TECHNOLOGY-KCS-602", file: "WEB-TECHNOLOGY-KCS-602.pdf" },
+      ];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

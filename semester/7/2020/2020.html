@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 7 - 2020 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 7</h1>
+        <br/><br/>
+        <h1>2020-21 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+       
+const pdfFiles = [
+{ name: "AIR-AND-NOISE-POLLUTION-CONTROL-RCE-077", file: "AIR-AND-NOISE-POLLUTION-CONTROL-RCE-077.pdf" },
+{ name: "APPLICATION-TO-SOFT-COMPUTING-RCS-071", file: "APPLICATION-TO-SOFT-COMPUTING-RCS-071.pdf" },
+{ name: "ARTIFICIAL-INTELLIGENCE-RCS-702-1", file: "ARTIFICIAL-INTELLIGENCE-RCS-702-1.pdf" },
+{ name: "AUTOMOBILE-ENGINEERING-RME-702-1", file: "AUTOMOBILE-ENGINEERING-RME-702-1.pdf" },
+{ name: "BLOCKCHAIN-ARCHITECTURE-DESIGN-RCS-076", file: "BLOCKCHAIN-ARCHITECTURE-DESIGN-RCS-076.pdf" },
+{ name: "CADCAM-RME-701-1", file: "CADCAM-RME-701-1.pdf" },        
+{ name: "CLOUD-COMPUTING-RCS-075-1", file: "CLOUD-COMPUTING-RCS-075-1.pdf" },
+{ name: "CRYPTOGRAPHY-AND-NETWORK-SECURITY-RIT-701-1", file: "CRYPTOGRAPHY-AND-NETWORK-SECURITY-RIT-701-1.pdf" },
+{ name: "DATA-COMMUNICATION-NETWORKS-REC-701", file: "DATA-COMMUNICATION-NETWORKS-REC-701.pdf" },
+{ name: "DESIGN-OF-STRUCTURE-III-RCE-701", file: "DESIGN-OF-STRUCTURE-III-RCE-701.pdf" },
+{ name: "DIGITAL-IMAGE-PROCESSING-REC-072-1", file: "DIGITAL-IMAGE-PROCESSING-REC-072-1.pdf" },
+{ name: "DISTRIBUTED-SYSTEM-RCS-701-1", file: "DISTRIBUTED-SYSTEM-RCS-701-1.pdf" },
+{ name: "GEOLOGY-AND-SOIL-MECHANICS-RCE-071-1", file: "GEOLOGY-AND-SOIL-MECHANICS-RCE-071-1.pdf" },
+{ name: "OPERATION-RESEARCH-RME-075", file: "OPERATION-RESEARCH-RME-075.pdf" },
+{ name: "OPTICAL-COMMUNICATION-REC-075-1", file: "OPTICAL-COMMUNICATION-REC-075-1.pdf" },
+{ name: "POWER-PLANT-ENGINEERING-RME-071-1", file: "POWER-PLANT-ENGINEERING-RME-071-1.pdf" },
+{ name: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-AND-ITS-FULFILLMENT-ROE-074", file: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-AND-ITS-FULFILLMENT-ROE-074.pdf" },
+{ name: "VLSI-DESIGN-REC-702-1", file: "VLSI-DESIGN-REC-702-1.pdf" },
+{ name: "WATER-RESOURCES-RCE-702-1", file: "WATER-RESOURCES-RCE-702-1.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

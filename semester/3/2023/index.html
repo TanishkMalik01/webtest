@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 2 - 2018 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 3</h1>
+        <br/><br/>
+        <h1>2023-24 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+  { name: "BAS301-TECHNICAL-COMMUNICATION", file: "BAS301-TECHNICAL-COMMUNICATION.pdf" },
+  { name: "BAS302-MATHEMATICS-III", file: "BAS302-MATHEMATICS-III.pdf" },
+  { name: "BAS303-MATHEMATICS-IV", file: "BAS303-MATHEMATICS-IV.pdf" },
+  { name: "BCC301-CYBER-SECURITY", file: "BCC301-CYBER-SECURITY.pdf" },
+  { name: "BCC302-PYTHON-PROGRAMMING", file: "BCC302-PYTHON-PROGRAMMING.pdf" },
+  { name: "BCE301-ENGINEERING-MECHANICS", file: "BCE301-ENGINEERING-MECHANICS.pdf" },
+  { name: "BCE302-SURVEYING-AND-GEOMATICS", file: "BCE302-SURVEYING-AND-GEOMATICS.pdf" },
+  { name: "BCE303-FLUID-MECHANICS", file: "BCE303-FLUID-MECHANICS.pdf" },
+  { name: "BCS301-DATA-STRUCTURE", file: "BCS301-DATA-STRUCTURE.pdf" },
+  { name: "BCS302-COMPUTER-ORGANIZATION-AND-ARCHITECTURE", file: "BCS302-COMPUTER-ORGANIZATION-AND-ARCHITECTURE.pdf" },
+  { name: "BCS303-DISCRETE-STRUCTURES-THEORY-OF-LOGIC", file: "BCS303-DISCRETE-STRUCTURES-THEORY-OF-LOGIC.pdf" },
+  { name: "BEC301-ELECTRONIC-DEVICES", file: "BEC301-ELECTRONIC-DEVICES.pdf" },
+  { name: "BEC302-DIGITAL-SYSTEM-DESIGN", file: "BEC302-DIGITAL-SYSTEM-DESIGN.pdf" },
+  { name: "BEC303-NETWORK-ANALYSIS-AND-SYNTHESIS", file: "BEC303-NETWORK-ANALYSIS-AND-SYNTHESIS.pdf" },
+  { name: "BEE301-ELECTROMAGNETIC-FIELD-THEORY", file: "BEE301-ELECTROMAGNETIC-FIELD-THEORY.pdf" },
+  { name: "BEE302-ELECTRICAL-MEASUREMENTS-INSTRUMENTATION", file: "BEE302-ELECTRICAL-MEASUREMENTS-INSTRUMENTATION.pdf" },
+  { name: "BEE303-BASIC-SIGNALS-SYSTEMS", file: "BEE303-BASIC-SIGNALS-SYSTEMS.pdf" },
+  { name: "BME301-THERMODYNAMICS", file: "BME301-THERMODYNAMICS.pdf" },
+  { name: "BME302-FLUID-MECHANICS-FLUID-MACHINES", file: "BME302-FLUID-MECHANICS-FLUID-MACHINES.pdf" },
+  { name: "BME303-MATERIALS-ENGINEERING", file: "BME303-MATERIALS-ENGINEERING.pdf" },
+  { name: "BOE301-ELECTRIC-AND-HYBRID-VEHICLES", file: "BOE301-ELECTRIC-AND-HYBRID-VEHICLES.pdf" },
+  { name: "BOE302-AUTOMATION-AND-ROBOTICS", file: "BOE302-AUTOMATION-AND-ROBOTICS.pdf" },
+  { name: "BOE303-MATERIAL-SCIENCE", file: "BOE303-MATERIAL-SCIENCE.pdf" },
+  { name: "BOE304-ENERGY-SCIENCE-ENGINEERING", file: "BOE304-ENERGY-SCIENCE-ENGINEERING.pdf" },
+  { name: "BOE305-SENSOR-INSTRUMENTATION", file: "BOE305-SENSOR-INSTRUMENTATION.pdf" },
+  { name: "BOE306-BASICS-DATA-STRUCTURE-ALGORITHMS", file: "BOE306-BASICS-DATA-STRUCTURE-ALGORITHMS.pdf" },     
+  { name: "BOE307-BASICS-OF-DATABASE-MANAGEMENT-SYSTEMS", file: "BOE307-BASICS-OF-DATABASE-MANAGEMENT-SYSTEMS.pdf" },
+  { name: "BOE308-ANALOG-ELECTRONICS-CIRCUITS", file: "BOE308-ANALOG-ELECTRONICS-CIRCUITS.pdf" },
+  { name: "BOE309-ELECTRONICS-ENGINEERING", file: "BOE309-ELECTRONICS-ENGINEERING.pdf" },
+  { name: "BVE301-UNIVERSAL-HUMAN-VALUES-AND-PROFESSIONAL-ETHICS", file: "BVE301-UNIVERSAL-HUMAN-VALUES-AND-PROFESSIONAL-ETHICS.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 7 - 2023 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 7</h1>
+        <br/><br/>
+        <h1>2023-24 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+        { name: "KAI071-OPTIMIZATION-IN-MACHINE-LEARNING", file: "KAI071-OPTIMIZATION-IN-MACHINE-LEARNING.pdf" },
+        { name: "KAI073-TEXT-ANALYTICS-AND-NATURAL-LANGUGAE-PROCESSING", file: "KAI073-TEXT-ANALYTICS-AND-NATURAL-LANGUGAE-PROCESSING.pdf" },
+        { name: "KAI075-DATA-WAREHOUSING-AND-DATA-MINING", file: "KAI075-DATA-WAREHOUSING-AND-DATA-MINING.pdf" },
+        { name: "KAI076-TIME-SERIES-ANALYSIS-AND-FORECASTING", file: "KAI076-TIME-SERIES-ANALYSIS-AND-FORECASTING.pdf" },
+        { name: "KAI077-SOFTWARE-ENGINEERING", file: "KAI077-SOFTWARE-ENGINEERING.pdf" },
+        { name: "KAI079-DISTRIBUTED-COMPUTING-SYSTEM", file: "KAI079-DISTRIBUTED-COMPUTING-SYSTEM.pdf" },
+        { name: "KAU073-VEHICLE-BODY-ENGINEERING-SAFETY", file: "KAU073-VEHICLE-BODY-ENGINEERING-SAFETY.pdf" },
+        { name: "KAU074-TROUBLE-SHOOTING-SERVICE-MAINTENANCE-REPAIR", file: "KAU074-TROUBLE-SHOOTING-SERVICE-MAINTENANCE-REPAIR.pdf" },
+        { name: "KCS071-ARTIFICIAL-INTELLIGENCE", file: "KCS071-ARTIFICIAL-INTELLIGENCE.pdf" },
+        { name: "KCS072-NATURAL-LANGUAGE-PROCESSING", file: "KCS072-NATURAL-LANGUAGE-PROCESSING.pdf" },
+        { name: "KCS073-HIGH-PERFORMANCE-COMPUTING", file: "KCS073-HIGH-PERFORMANCE-COMPUTING.pdf" },
+        { name: "KCS074-CRYPTOGRAPHY-AND-NETWORK-SECURITY", file: "KCS074-CRYPTOGRAPHY-AND-NETWORK-SECURITY.pdf" },
+        { name: "KCS079-SERVICE-ORIENTED-ARCHITECTURE", file: "KCS079-SERVICE-ORIENTED-ARCHITECTURE.pdf" },
+        { name: "KCS710-QUANTUM-COMPUTING", file: "KCS710-QUANTUM-COMPUTING.pdf" },
+        { name: "KCS711-MOBILE-COMPUTING", file: "KCS711-MOBILE-COMPUTING.pdf" },
+        { name: "KCS712-INTERNET-OF-THINGS", file: "KCS712-INTERNET-OF-THINGS.pdf" },
+        { name: "KCS713-CLOUD-COMPUTING", file: "KCS713-CLOUD-COMPUTING.pdf" },
+        { name: "KCS714-BLOCKCHAIN-ARCHITECTURE-DESIGN", file: "KCS714-BLOCKCHAIN-ARCHITECTURE-DESIGN.pdf" },
+        { name: "KDS079-SERVICE-ORIENTED-ARCHITECTURE", file: "KDS079-SERVICE-ORIENTED-ARCHITECTURE.pdf" },
+        { name: "KHU701-RURAL-DEVELOPMENT-ADMINISTRATION-PLANNING", file: "KHU701-RURAL-DEVELOPMENT-ADMINISTRATION-PLANNING.pdf" },
+        { name: "KHU702-PROJECT-MANAGEMENT-ENTREPRENEURSHIP", file: "KHU702-PROJECT-MANAGEMENT-ENTREPRENEURSHIP.pdf" },
+        { name: "KIT071-SOFTWARE-PROJECT-MANAGEMENT", file: "KIT071-SOFTWARE-PROJECT-MANAGEMENT.pdf" },
+        { name: "KME073-MATHEMATICAL-MODELING-OF-MANUFACTURING-PROCESSES", file: "KME073-MATHEMATICAL-MODELING-OF-MANUFACTURING-PROCESSES.pdf" },
+        { name: "KME074-MACHINE-LEARNING", file: "KME074-MACHINE-LEARNING.pdf" },
+        { name: "KME075-COMPUTER-GRAPHICS-AND-PRODUCT-MODELING", file: "KME075-COMPUTER-GRAPHICS-AND-PRODUCT-MODELING.pdf" },
+        { name: "KME076-POWER-PLANT-ENGINEERING", file: "KME076-POWER-PLANT-ENGINEERING.pdf" },
+        { name: "KOE071-FILTER-DESIGN", file: "KOE071-FILTER-DESIGN.pdf" },
+        { name: "KOE072-BIOECONOMICS", file: "KOE072-BIOECONOMICS.pdf" },  
+        { name: "KOE073-MACHINE-LEARNING", file: "KOE073-MACHINE-LEARNING.pdf" },
+        { name: "KOE074-RENEWABLE-ENERGY-RESOURCES", file: "KOE074-RENEWABLE-ENERGY-RESOURCES.pdf" },
+        { name: "KOE075-OPERATIONS-RESEARCH", file: "KOE075-OPERATIONS-RESEARCH.pdf" },
+        { name: "KOE076-VISION-FOR-HUMANE-SOCIETY", file: "KOE076-VISION-FOR-HUMANE-SOCIETY.pdf" },
+        { name: "KOE077-DESIGN-THINKING", file: "KOE077-DESIGN-THINKING.pdf" },
+        { name: "KOE078-SOIL-WATER-CONSERVATION-ENGINEERING", file: "KOE078-SOIL-WATER-CONSERVATION-ENGINEERING.pdf" },
+        { name: "KOE079-INTRODUCTION-TO-WOMENS-GENDER-STUDIES", file: "KOE079-INTRODUCTION-TO-WOMENS-GENDER-STUDIES.pdf" },
+        { name: "KOT071-IOT-SECURITY", file: "KOT071-IOT-SECURITY.pdf" },  
+        { name: "KOT075-REAL-TIME-OPERATING-SYSTEMS", file: "KOT075-REAL-TIME-OPERATING-SYSTEMS.pdf" },
+        { name: "KOT077-DATA-ANALYTICS-FOT-IOT", file: "KOT077-DATA-ANALYTICS-FOT-IOT.pdf" },
+        { name: "KOT078-ARCHITECTING-SMART-IOT-DEVICES", file: "KOT078-ARCHITECTING-SMART-IOT-DEVICES.pdf" },
+        { name: "KOT710-IOT-SYSTEM-ARCHITECTURE", file: "KOT710-IOT-SYSTEM-ARCHITECTURE.pdf" },
+        { name: "KOT711-OPEARTING-SYSTEM-FOR-IOT", file: "KOT711-OPEARTING-SYSTEM-FOR-IOT.pdf" },
+        { name: "KOT712-MOBILE-APPLICATION-DEVELOPMENT-FOR-IOT", file: "KOT712-MOBILE-APPLICATION-DEVELOPMENT-FOR-IOT.pdf" },
+      ];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

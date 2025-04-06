@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 1 - 2022 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white; /* Default color, will be overridden by JS */
+            font-size: 18px;
+            width: 120px;
+            padding: 10px;
+            transition: color 0.5s;
+        }
+
+        .pdf-item span {
+            color: white; /* Default text color */
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff; /* White text in dark mode */
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+            transition: transform 0.3s ease; 
+        }
+        .pdf-icon:hover {
+            transform: scale(1.2); /* Enlarge icon on hover */
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 1</h1>
+        <br/><br/>
+        <h1>2022 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+            </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+        { name: "ENGINEERING-CHEMISTRY-BAS-102", file: "ENGINEERING-CHEMISTRY-BAS-102.pdf" },
+        { name: "ENGINEERING-MATHEMATICS-I-BAS-103", file: "ENGINEERING-MATHEMATICS-I-BAS-103.pdf" },        
+        { name: "ENGINEERING-PHYSICS-BAS-101", file: "ENGINEERING-PHYSICS-BAS-101.pdf" },
+        { name: "ENVIRONMENT-AND-ECOLOGY-BAS-104", file: "ENVIRONMENT-AND-ECOLOGY-BAS-104.pdf" },
+        { name: "Fundamentals-of-Electrical-Engineering-BEE-101", file: "Fundamentals-of-Electrical-Engineering-BEE-101.pdf" },
+        { name: "FUNDAMENTALS-OF-ELECTRONICS-ENGINEERING-BEC-101", file: "FUNDAMENTALS-OF-ELECTRONICS-ENGINEERING-BEC-101.pdf" },
+        { name: "Fundamentals-of-Mechanical-Engineering-BME-101", file: "Fundamentals-of-Mechanical-Engineering-BME-101.pdf" },
+        { name: "PROGRAMMING-FOR-PROBLEM-SOLVING-BCS-101", file: "PROGRAMMING-FOR-PROBLEM-SOLVING-BCS-101.pdf" },
+        { name: "SOFT-SKILLS-BAS-105", file: "SOFT-SKILLS-BAS-105.pdf" },
+      ];
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+       
+    </script>
+</body>
+</html>

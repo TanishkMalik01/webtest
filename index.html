@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Question Papers</title>
+
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .container {
+            margin-top: -50px;
+        }
+        .ring {
+            margin-bottom: 50px;
+        }
+        .contact-icons {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="static/dark.png" alt="Dark Mode Icon">
+    </button>
+
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+
+    <div class="container">
+        <h1>Welcome to Question Papers Archive</h1>
+        <p>Select your semester:</p>
+        <div class="year-container">
+            <a href="semester/1.html"><img src="static/1.png" alt="Semester 1" class="year-link-image" data-sem="1" id="sem-logo-1"></a>
+            <a href="semester/2.html"><img src="static/2.png" alt="Semester 2" class="year-link-image" data-sem="2" id="sem-logo-2"></a>
+            <a href="semester/3.html"><img src="static/3.png" alt="Semester 3" class="year-link-image" data-sem="3" id="sem-logo-3"></a>
+            <a href="semester/4.html"><img src="static/4.png" alt="Semester 4" class="year-link-image" data-sem="4" id="sem-logo-4"></a>
+            <a href="semester/5.html"><img src="static/5.png" alt="Semester 5" class="year-link-image" data-sem="5" id="sem-logo-5"></a>
+            <a href="semester/6.html"><img src="static/6.png" alt="Semester 6" class="year-link-image" data-sem="6" id="sem-logo-6"></a>
+            <a href="semester/7.html"><img src="static/7.png" alt="Semester 7" class="year-link-image" data-sem="7" id="sem-logo-7"></a>
+            <a href="semester/8.html"><img src="static/8.png" alt="Semester 8" class="year-link-image" data-sem="8" id="sem-logo-8"></a>
+        </div>
+    </div>
+
+    <div class="contact-icons">
+        <a href="#" id="telegram-link"><img src="static/telegram.png" alt="Telegram" id="telegram-icon"></a>
+    </div>
+    <script src="dark-mode-manager.js"></script>
+    <script>
+        const rings = document.querySelectorAll('.ring i');
+        const ringContainer = document.querySelector('.ring');
+        const body = document.body;
+        const semLogos = document.querySelectorAll('.year-link-image');
+        const telegramIcon = document.getElementById('telegram-icon');
+        const modeIcon = document.getElementById('mode-icon');
+
+        function toggleDarkMode() {
+            body.classList.toggle("dark-mode");
+            const isDarkModeEnabled = body.classList.contains("dark-mode");
+
+            if (isDarkModeEnabled) {
+                localStorage.setItem('darkMode', 'enabled');
+                modeIcon.src = "static/light.png";
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                modeIcon.src = "static/dark.png";
+            }
+
+            updateRingColors(isDarkModeEnabled);
+            updateSemLogos(isDarkModeEnabled);
+            updateTelegramIcon(isDarkModeEnabled);
+        }
+
+        function updateRingColors(isDarkMode) {
+            rings.forEach(ring => {
+                ring.style.borderColor = isDarkMode ? '#fff' : '#333';
+                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
+            });
+        }
+
+        function updateSemLogos(isDarkMode) {
+            semLogos.forEach(logoImage => {
+                let semNumber = logoImage.dataset.sem;
+                if (isDarkMode) {
+                    logoImage.src = `static/${semNumber}-dark.png`;
+                } else {
+                    logoImage.src = `static/${semNumber}.png`;
+                }
+            });
+        }
+
+        function updateTelegramIcon(isDarkMode) {
+            if (isDarkMode) {
+                telegramIcon.src = 'static/telegram-dark.png';
+            } else {
+                telegramIcon.src = 'static/telegram.png';
+            }
+        }
+
+        function applyStoredDarkModePreference() {
+            const storedDarkMode = localStorage.getItem('darkMode');
+
+            if (storedDarkMode === 'enabled') {
+                body.classList.add("dark-mode");
+                modeIcon.src = "static/light.png";
+                updateRingColors(true);
+                updateSemLogos(true);
+                updateTelegramIcon(true);
+            } else {
+                modeIcon.src = "static/dark.png";
+                updateRingColors(false);
+                updateSemLogos(false);
+                updateTelegramIcon(false);
+            }
+        }
+
+        applyStoredDarkModePreference();
+
+        document.addEventListener('mousemove', (e) => {
+            const rect = ringContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
+            const radius = rect.width / 2;
+
+            rings.forEach(ring => {
+                if (distance <= radius) {
+                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
+                    ring.style.borderColor = clr;
+                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
+                } else {
+                    updateRingColors(body.classList.contains('dark-mode'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 8 - 2022 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 8</h1>
+        <br/><br/>
+        <h1>2022-23 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+        { name: "AUTOMATION-AND-ROBOTICS-KOE091", file: "AUTOMATION-AND-ROBOTICS-KOE091.pdf" },
+        { name: "BIG-DATA-KOE097", file: "BIG-DATA-KOE097.pdf" },
+        { name: "BIO-MEDICAL-SIGNAL-PROCESSING-KOE082", file: "BIO-MEDICAL-SIGNAL-PROCESSING-KOE082.pdf" },
+        { name: "CLOUD-COMPUTING-KOE081", file: "CLOUD-COMPUTING-KOE081.pdf" },
+        { name: "COMPUTERIZED-PROCESS-CONTROL-KOE092", file: "COMPUTERIZED-PROCESS-CONTROL-KOE092.pdf" },
+        { name: "DATA-WAREHOUSING-DATA-MINING-KOE093", file: "DATA-WAREHOUSING-DATA-MINING-KOE093.pdf" },
+        { name: "DIGITAL-AND-SOCIAL-MEDIA-MARKETING-KOE094", file: "DIGITAL-AND-SOCIAL-MEDIA-MARKETING-KOE094.pdf" },
+        { name: "ELECTRIC-VEHICLES-KOE090", file: "ELECTRIC-VEHICLES-KOE090.pdf" },
+        { name: "ENTREPRENEURSHIP-DEVELOPMENT-KOE083", file: "ENTREPRENEURSHIP-DEVELOPMENT-KOE083.pdf" },
+        { name: "HUMAN-VALUES-IN-BUDDHA-AND-JAIN-DARSHAN-KOE098", file: "HUMAN-VALUES-IN-BUDDHA-AND-JAIN-DARSHAN-KOE098.pdf" },
+        { name: "HUMAN-VALUES-IN-MADHYASTH-DARSHAN-KOE089", file: "HUMAN-VALUES-IN-MADHYASTH-DARSHAN-KOE089.pdf" },
+        { name: "HUMAN-VALUES-IN-VEDIC-DARSHAN-KOE099", file: "HUMAN-VALUES-IN-VEDIC-DARSHAN-KOE099.pdf" },
+        { name: "INDUSTRIAL-OPTIMIZATION-TECHNIQUES-KOE086", file: "INDUSTRIAL-OPTIMIZATION-TECHNIQUES-KOE086.pdf" },
+        { name: "INTRODUCTION-TO-SMART-GRID-KOE084", file: "INTRODUCTION-TO-SMART-GRID-KOE084.pdf" },
+        { name: "MODELING-OF-FIELD-EFFECT-NANO-DEVICES-KOE095", file: "MODELING-OF-FIELD-EFFECT-NANO-DEVICES-KOE095.pdf" },
+        { name: "NATURAL-LANGUAGE-PROCESSING-KOE088", file: "NATURAL-LANGUAGE-PROCESSING-KOE088.pdf" },
+        { name: "PROJECT-MANAGEMENT-ENTREPRENEURSHIP-KHU802", file: "PROJECT-MANAGEMENT-ENTREPRENEURSHIP-KHU802.pdf" },
+        { name: "QUALITY-MANAGEMENT-KOE085", file: "QUALITY-MANAGEMENT-KOE085.pdf" },
+        { name: "RURAL-DEVELOPMENT-ADMINISTRATION-AND-PLANNING-KHU801", file: "RURAL-DEVELOPMENT-ADMINISTRATION-AND-PLANNING-KHU801.pdf" },     
+        { name: "VIROLOGY-KOE087", file: "VIROLOGY-KOE087.pdf" },
+      ];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

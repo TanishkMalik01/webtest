@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 5 - 2021 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 5</h1>
+        <br/><br/>
+        <h1>2021-22 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        const pdfFiles = [
+        { name: "ADVANCE-STRUCTURAL-ANALYSIS-KCE061", file: "ADVANCE-STRUCTURAL-ANALYSIS-KCE061.pdf" },
+        { name: "ANALOG-SIGNAL-PROCESSING-KEC064", file: "ANALOG-SIGNAL-PROCESSING-KEC064.pdf" },
+        { name: "ANTENNA-AND-WAVE-PROPAGATION-KEC603", file: "ANTENNA-AND-WAVE-PROPAGATION-KEC603.pdf" },
+        { name: "ARTIFICIAL-INTELLIGENCE-KME062", file: "ARTIFICIAL-INTELLIGENCE-KME062.pdf" },
+        { name: "AUTOMOTIVE-ELECTRICAL-AND-ELECTRONICS-KAU061", file: "AUTOMOTIVE-ELECTRICAL-AND-ELECTRONICS-KAU061.pdf" },
+        { name: "BASICS-OF-DATA-BASE-MANAGEMENT-SYSTEM-KOE067", file: "BASICS-OF-DATA-BASE-MANAGEMENT-SYSTEM-KOE067.pdf" },
+        { name: "BIG-DATA-KCS061", file: "BIG-DATA-KCS061.pdf" },
+        { name: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KIT061", file: "BLOCKCHAIN-ARCHITECTURE-DESIGN-KIT061.pdf" },
+        { name: "COMPUTER-BASED-NUMERICAL-TECHNIQUES-KOE065", file: "COMPUTER-BASED-NUMERICAL-TECHNIQUES-KOE065.pdf" },
+        { name: "COMPUTER-NETWORKS-KCS603", file: "COMPUTER-NETWORKS-KCS603.pdf" },
+        { name: "CONSTITUTION-OF-INDIA-LAW-ENGINEERING-KNC601", file: "CONSTITUTION-OF-INDIA-LAW-ENGINEERING-KNC601.pdf" },
+        { name: "CONTROL-SYSTEM-KEC602", file: "CONTROL-SYSTEM-KEC602.pdf" },
+        { name: "CONTROL-SYSTEM-KECZ602", file: "CONTROL-SYSTEM-KECZ602.pdf" },
+        { name: "DATA-ANALYTICS-KIT601", file: "DATA-ANALYTICS-KIT601.pdf" },
+        { name: "DATA-COMMUNICATION-NETWORKS-KEC063", file: "DATA-COMMUNICATION-NETWORKS-KEC063.pdf" },
+        { name: "DATA-COMPRESSION-KCS064", file: "DATA-COMPRESSION-KCS064.pdf" },
+        { name: "DESIGN-AND-ANALYSIS-OF-ALGORITHM-KECZ603", file: "DESIGN-AND-ANALYSIS-OF-ALGORITHM-KECZ603.pdf" },   
+        { name: "DESIGN-OF-CONCRETE-STRUCTURES-KCE601", file: "DESIGN-OF-CONCRETE-STRUCTURES-KCE601.pdf" },
+        { name: "DIGITAL-COMMUNICATION-KEC601", file: "DIGITAL-COMMUNICATION-KEC601.pdf" },
+        { name: "EMBEDDED-SYSTEM-KOE062", file: "EMBEDDED-SYSTEM-KOE062.pdf" },
+        { name: "ENVIRONMENTAL-ENGINEERING-KCE603", file: "ENVIRONMENTAL-ENGINEERING-KCE603.pdf" },
+        { name: "GAS-DYNAMICS-AND-JET-PROPULSION-KME064", file: "GAS-DYNAMICS-AND-JET-PROPULSION-KME064.pdf" },       
+        { name: "GIS-REMOTE-SENSING-KOE066", file: "GIS-REMOTE-SENSING-KOE066.pdf" },
+        { name: "IDEA-TO-BUSINESS-MODEL-KOE060", file: "IDEA-TO-BUSINESS-MODEL-KOE060.pdf" },
+        { name: "IMAGE-PROCESSING-KCS062", file: "IMAGE-PROCESSING-KCS062.pdf" },
+        { name: "INDIAN-TRADITION-CULTURE-SOCIETY-KNC602", file: "INDIAN-TRADITION-CULTURE-SOCIETY-KNC602.pdf" },     
+        { name: "INTRODUCTION-TO-MEMS-KOE063", file: "INTRODUCTION-TO-MEMS-KOE063.pdf" },
+        { name: "MACHINE-DESIGN-KME602", file: "MACHINE-DESIGN-KME602.pdf" },
+        { name: "MICROCONTROLLER-EMBEDDED-SYSTEM-DESIGN-KEC061", file: "MICROCONTROLLER-EMBEDDED-SYSTEM-DESIGN-KEC061.pdf" },
+        { name: "MICROCONTROLLER-FOR-EMBEDDED-SYSTEM-DESIGN-KECZ062", file: "MICROCONTROLLER-FOR-EMBEDDED-SYSTEM-DESIGN-KECZ062.pdf" },
+        { name: "NON-DESTRUCTIVE-TESTING-KME061", file: "NON-DESTRUCTIVE-TESTING-KME061.pdf" },
+        { name: "OBJECT-ORIENTED-PROGRAMMING-KOE064", file: "OBJECT-ORIENTED-PROGRAMMING-KOE064.pdf" },
+        { name: "REAL-TIME-SYSTEMS-KCS063", file: "REAL-TIME-SYSTEMS-KCS063.pdf" },
+        { name: "REAL-TIME-SYSTEMS-KOE061", file: "REAL-TIME-SYSTEMS-KOE061.pdf" },
+        { name: "REFRIGERATION-AND-AIR-CONDITIONING-KME601", file: "REFRIGERATION-AND-AIR-CONDITIONING-KME601.pdf" }, 
+        { name: "REPAIR-AND-REHABILITATION-OF-STRUCTURES-KCE063", file: "REPAIR-AND-REHABILITATION-OF-STRUCTURES-KCE063.pdf" },
+        { name: "RIVER-ENGINEERING-KCE062", file: "RIVER-ENGINEERING-KCE062.pdf" },
+        { name: "SATELLITE-COMMUNICATION-KEC062", file: "SATELLITE-COMMUNICATION-KEC062.pdf" },
+        { name: "SOFTWARE-ENGINEERING-KCS601", file: "SOFTWARE-ENGINEERING-KCS601.pdf" },
+        { name: "SOFTWARE-PROJECT-MANAGEMENT-KOE068", file: "SOFTWARE-PROJECT-MANAGEMENT-KOE068.pdf" },
+        { name: "THEORY-OF-MACHINE-KME603", file: "THEORY-OF-MACHINE-KME603.pdf" },
+        { name: "TOOL-DESIGN-KME604", file: "TOOL-DESIGN-KME604.pdf" },
+        { name: "TRANSPORTATION-ENGINEERING-KCE602", file: "TRANSPORTATION-ENGINEERING-KCE602.pdf" },
+        { name: "TRIBOLOGY-KME063", file: "TRIBOLOGY-KME063.pdf" },
+        { name: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-KOE069", file: "UNDERSTANDING-THE-HUMAN-BEING-COMPREHENSIVELY-HUMAN-ASPIRATIONS-KOE069.pdf" },
+        { name: "VEHICLE-TRANSPORT-MANAGEMENT-KAU062", file: "VEHICLE-TRANSPORT-MANAGEMENT-KAU062.pdf" },
+        { name: "WEB-TECHNOLOGY-KCS602", file: "WEB-TECHNOLOGY-KCS602.pdf" },
+      ];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

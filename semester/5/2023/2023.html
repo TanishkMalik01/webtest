@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 3 - 2019 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 3</h1>
+        <br/><br/>
+        <h1>2019-20 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        
+const pdfFiles = [
+{ name: "KAI051-MATHEMATICAL-FOUNDATION-AI-ML-AND-DATA-SCIENCE", file: "KAI051-MATHEMATICAL-FOUNDATION-AI-ML-AND-DATA-SCIENCE.pdf" },
+{ name: "KAI052-NATURAL-LANGUAGE-PROCESSING", file: "KAI052-NATURAL-LANGUAGE-PROCESSING.pdf" },
+{ name: "KAI053-INTELLIGENT-DATABASE-SYSTEM", file: "KAI053-INTELLIGENT-DATABASE-SYSTEM.pdf" },
+{ name: "KAI501-ARTIFICIAL-INTELLIGENCE", file: "KAI501-ARTIFICIAL-INTELLIGENCE.pdf" },
+{ name: "KAU051-AUTOMOBILE-ENGINES-COMBUSTION", file: "KAU051-AUTOMOBILE-ENGINES-COMBUSTION.pdf" },
+{ name: "KAU052-AUTOMOTIVE-CHASSIS-AND-SUSPENSION", file: "KAU052-AUTOMOTIVE-CHASSIS-AND-SUSPENSION.pdf" },   
+{ name: "KCE051-CONCRETE-TECHNOLOGY", file: "KCE051-CONCRETE-TECHNOLOGY.pdf" },
+{ name: "KCE052-MODERN-CONSTRUCTION-MATERIALS", file: "KCE052-MODERN-CONSTRUCTION-MATERIALS.pdf" },
+{ name: "KCE053-OPEN-CHANNEL-FLOW", file: "KCE053-OPEN-CHANNEL-FLOW.pdf" },
+{ name: "KCE054-ENGINEERING-GEOLOGY", file: "KCE054-ENGINEERING-GEOLOGY.pdf" },
+{ name: "KCE055-ENGINEERING-HYDROLOGY", file: "KCE055-ENGINEERING-HYDROLOGY.pdf" },
+{ name: "KCE056-SENSOR-AND-INSTRUMENTATION-TECHNOLOGIES-FOR-CIVIL-ENGINEERING", file: "KCE056-SENSOR-AND-INSTRUMENTATION-TECHNOLOGIES-FOR-CIVIL-ENGINEERING.pdf" },   
+{ name: "KCE057-AIR-AND-NOISE-POLLUTION-CONTROL", file: "KCE057-AIR-AND-NOISE-POLLUTION-CONTROL.pdf" },       
+{ name: "KCE058-GIS-AND-ADVANCE-REMOTE-SENSING", file: "KCE058-GIS-AND-ADVANCE-REMOTE-SENSING.pdf" },
+{ name: "KCE501-GEOTECHNICAL-ENGINEERING", file: "KCE501-GEOTECHNICAL-ENGINEERING.pdf" },
+{ name: "KCE502-STRUCTURAL-ANALYSIS", file: "KCE502-STRUCTURAL-ANALYSIS.pdf" },
+{ name: "KCE503-QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT", file: "KCE503-QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT.pdf" },
+{ name: "KCS051-DATA-ANALYTICS", file: "KCS051-DATA-ANALYTICS.pdf" },
+{ name: "KCS052-WEB-DESIGNING", file: "KCS052-WEB-DESIGNING.pdf" },
+{ name: "KCS053-COMPUTER-GRAPHICS", file: "KCS053-COMPUTER-GRAPHICS.pdf" },
+{ name: "KCS054-OBJECT-ORIENTED-SYSTEM-DESIGN", file: "KCS054-OBJECT-ORIENTED-SYSTEM-DESIGN.pdf" },
+{ name: "KCS055-MACHINE-LEARNING-TECHNIQUES", file: "KCS055-MACHINE-LEARNING-TECHNIQUES.pdf" },
+{ name: "KCS056-APPLICATION-OF-SOFT-COMPUTING", file: "KCS056-APPLICATION-OF-SOFT-COMPUTING.pdf" },
+{ name: "KCS501-DATA-BASE-MANAGEMENT-SYSTEM", file: "KCS501-DATA-BASE-MANAGEMENT-SYSTEM.pdf" },
+{ name: "KCS502-COMPILER-DESIGN", file: "KCS502-COMPILER-DESIGN.pdf" },
+{ name: "KCS503-DESIGN-AND-ANALYSIS-OF-ALGORITHM", file: "KCS503-DESIGN-AND-ANALYSIS-OF-ALGORITHM.pdf" },     
+{ name: "KDS051-BUSINESS-INTELLIGENCE-AND-ANALYTICS", file: "KDS051-BUSINESS-INTELLIGENCE-AND-ANALYTICS.pdf" },
+{ name: "KDS052-DISTRIBUTED-SYSTEM", file: "KDS052-DISTRIBUTED-SYSTEM.pdf" },
+{ name: "KDS053-STREAM-PROCESSING-AND-ANALYTICS", file: "KDS053-STREAM-PROCESSING-AND-ANALYTICS.pdf" },       
+{ name: "KDS501-INTRODUCTION-TO-DATA-ANALYTICS-AND-VISUALIZATION", file: "KDS501-INTRODUCTION-TO-DATA-ANALYTICS-AND-VISUALIZATION.pdf" },
+{ name: "KEC051-COMPUTER-ARCHITECTURE-AND-ORGANIZATION", file: "KEC051-COMPUTER-ARCHITECTURE-AND-ORGANIZATION.pdf" },
+{ name: "KEC052-INDUSTRIAL-ELECTRONICS", file: "KEC052-INDUSTRIAL-ELECTRONICS.pdf" },
+{ name: "KEC053-VLSI-TECHNOLOGY", file: "KEC053-VLSI-TECHNOLOGY.pdf" },
+{ name: "KEC054-ADVANCE-DIGITAL-DESIGN-USING-VERILOG", file: "KEC054-ADVANCE-DIGITAL-DESIGN-USING-VERILOG.pdf" },
+{ name: "KEC055-ELECTRONICS-SWITCHING", file: "KEC055-ELECTRONICS-SWITCHING.pdf" },
+{ name: "KEC056-ADVANCE-SEMICONDUCTOR-DEVICE", file: "KEC056-ADVANCE-SEMICONDUCTOR-DEVICE.pdf" },
+{ name: "KEC057-ELECTRONIC-INSTRUMENTATION-AND-MEASUREMENTS", file: "KEC057-ELECTRONIC-INSTRUMENTATION-AND-MEASUREMENTS.pdf" },
+{ name: "KEC058-OPTICAL-COMMUNICATION", file: "KEC058-OPTICAL-COMMUNICATION.pdf" },
+{ name: "KEC501-INTEGRATED-CIRCUITS", file: "KEC501-INTEGRATED-CIRCUITS.pdf" },
+{ name: "KEC502-MICROPROCESSOR-MICROCONTROLLER", file: "KEC502-MICROPROCESSOR-MICROCONTROLLER.pdf" },
+{ name: "KEC503-DIGITAL-SIGNAL-PROCESSING", file: "KEC503-DIGITAL-SIGNAL-PROCESSING.pdf" },
+{ name: "KEE051-ROBOTICS", file: "KEE051-ROBOTICS.pdf" },
+{ name: "KEE052-SENSORS-AND-TRANSDUCERS", file: "KEE052-SENSORS-AND-TRANSDUCERS.pdf" },
+{ name: "KEE053-INDUSTRIAL-AUTOMATION-AND-CONTROL", file: "KEE053-INDUSTRIAL-AUTOMATION-AND-CONTROL.pdf" },   
+{ name: "KEE054-ELECTRICAL-STANDARDS-AND-ENGINEERING-PRACTICES", file: "KEE054-ELECTRICAL-STANDARDS-AND-ENGINEERING-PRACTICES.pdf" },
+{ name: "KEE501-POWER-SYSTEM-I", file: "KEE501-POWER-SYSTEM-I.pdf" },
+{ name: "KEE502-CONTROL-SYSTEM", file: "KEE502-CONTROL-SYSTEM.pdf" },
+{ name: "KEE503-ELECTRICAL-MACHINES-II", file: "KEE503-ELECTRICAL-MACHINES-II.pdf" },
+{ name: "KIT051-STATISTICAL-COMPUTING", file: "KIT051-STATISTICAL-COMPUTING.pdf" },
+{ name: "KIT052-COMPILER-DESIGN", file: "KIT052-COMPILER-DESIGN.pdf" },
+{ name: "KME051-COMPUTER-INTEGRATED-MANUFACTURING", file: "KME051-COMPUTER-INTEGRATED-MANUFACTURING.pdf" },   
+{ name: "KME052-MECHATRONICS-SYSTEMS", file: "KME052-MECHATRONICS-SYSTEMS.pdf" },
+{ name: "KME053-QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT", file: "KME053-QUANTITY-ESTIMATION-AND-CONSTRUCTION-MANAGEMENT.pdf" },
+{ name: "KME054-I-C-ENGINE-FUELS-LUBRICATION", file: "KME054-I-C-ENGINE-FUELS-LUBRICATION.pdf" },
+{ name: "KME055-ADVANCE-WELDING", file: "KME055-ADVANCE-WELDING.pdf" },
+{ name: "KME056-PROGRAMMING-DATA-STRUCTURES-AND-ALGORITHMS-USING-PYTHON", file: "KME056-PROGRAMMING-DATA-STRUCTURES-AND-ALGORITHMS-USING-PYTHON.pdf" },
+{ name: "KME057-MECHANICAL-VIBRATIONS", file: "KME057-MECHANICAL-VIBRATIONS.pdf" },
+{ name: "KME058-FUELS-AND-COMBUSTION", file: "KME058-FUELS-AND-COMBUSTION.pdf" },
+{ name: "KME501-HEAT-AND-MASS-TRANSFER", file: "KME501-HEAT-AND-MASS-TRANSFER.pdf" },
+{ name: "KME502-STRENGTH-OF-MATERIAL", file: "KME502-STRENGTH-OF-MATERIAL.pdf" },
+{ name: "KME503-INDUSTRIAL-ENGINEERING", file: "KME503-INDUSTRIAL-ENGINEERING.pdf" },
+{ name: "KML051-CLOUD-COMPUTING", file: "KML051-CLOUD-COMPUTING.pdf" },
+{ name: "KNC501-CONSTITUTION-OF-INDIA-LAW-AND-ENGINEERING", file: "KNC501-CONSTITUTION-OF-INDIA-LAW-AND-ENGINEERING.pdf" },
+{ name: "KNC502-INDIAN-TRADITION-CULTURE-AND-SOCIETY", file: "KNC502-INDIAN-TRADITION-CULTURE-AND-SOCIETY.pdf" },
+{ name: "KOT052-PROGRAMMING-AND-INTERFACING-WITH-MICROCONTROLLERS", file: "KOT052-PROGRAMMING-AND-INTERFACING-WITH-MICROCONTROLLERS.pdf" },
+{ name: "KOT053-WEARABLE-COMPUTING-MIXED-REALITY-AND-INTERNET-OF-EVERYTHING", file: "KOT053-WEARABLE-COMPUTING-MIXED-REALITY-AND-INTERNET-OF-EVERYTHING.pdf" },       
+{ name: "KOT054-PRIVACY-AND-SECURITY-IN-IOT", file: "KOT054-PRIVACY-AND-SECURITY-IN-IOT.pdf" },
+{ name: "KOT055-EMBEDDED-SYSTEMS-AND-REAL-TIME-OPERATING-SYSTEM", file: "KOT055-EMBEDDED-SYSTEMS-AND-REAL-TIME-OPERATING-SYSTEM.pdf" },
+{ name: "KOT501-INTRODUCTION-TO-INTERNET-OF-THINGS", file: "KOT501-INTRODUCTION-TO-INTERNET-OF-THINGS.pdf" }, 
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester 7 - 2021 Question Papers</title>
+    <link rel="stylesheet" href="../../../styles.css">
+    <style>
+        /* PDF Grid Layout: 5 items per row */
+        .pdf-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow items to wrap to the next row */
+            justify-content: center; /* Center items horizontally */
+            gap: 5px;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0 auto;
+            z-index: 10;
+            position: relative;
+        } 
+        .pdf-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            width: 150px;
+            padding: 10px;
+            transition: color 0.5s;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .pdf-item span {
+            color: white;
+        }
+
+        .dark-mode .pdf-item span {
+            color: #fff;
+        }
+
+        .pdf-item:not(.dark-mode) span{
+            color: #000;
+        }
+
+        .pdf-icon {
+            width: 70px;
+            height: 70px;
+            transition: filter 0.5s;
+        }
+        .dark-mode .pdf-icon {
+            /* The src is swapped via JS, so no invert filter here */
+        }
+        body {
+            overflow-y: auto; /* Enable vertical scrolling when needed */
+            padding-bottom: 30px; /* Add some padding at the bottom for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleDarkMode()">
+        <img id="mode-icon" src="/static/dark.png" alt="Dark Mode Icon">
+    </button>
+    
+    <div class="ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
+    </div>
+    
+    <div class="container">
+        <h1>Semester 7</h1>
+        <br/><br/>
+        <h1>2021-22 Question Papers</h1>
+        <p>Select a subject to download:</p>
+        <div class="pdf-container" id="pdf-container">
+        </div>
+    </div>
+    
+    <div class="contact-icons">
+        <a href="#" id="telegram-link">
+            <img src="/static/telegram.png" alt="Telegram" id="telegram-icon">
+        </a>
+    </div>
+    <script src="../dark-mode-manager.js"></script>
+    <script>
+        // Array of PDF files with names and file paths
+        
+const pdfFiles = [
+{ name: "ADVANCED-CONCRETE-DESIGN-KCE-073", file: "ADVANCED-CONCRETE-DESIGN-KCE-073.pdf" },
+{ name: "CLOUD-COMPUTING-KCS-713", file: "CLOUD-COMPUTING-KCS-713.pdf" },
+{ name: "CRYPTOGRAPY-NETWORK-SECURITY-KCS-074", file: "CRYPTOGRAPY-NETWORK-SECURITY-KCS-074.pdf" },
+{ name: "HYBRID-VEHICLE-PROPULSION-KAU-072", file: "HYBRID-VEHICLE-PROPULSION-KAU-072.pdf" },
+{ name: "IRRIGATION-AND-WATER-RESOURCE-ENGINEERING-KCE-078", file: "IRRIGATION-AND-WATER-RESOURCE-ENGINEERING-KCE-078.pdf" },
+{ name: "OPERATIONS-RESEARCH-KOE-075", file: "OPERATIONS-RESEARCH-KOE-075.pdf" },
+{ name: "POWER-PLANT-ENGINEERING-KME-076", file: "POWER-PLANT-ENGINEERING-KME-076.pdf" },
+{ name: "RENEWABLE-ENERGY-RESOURCES-KOE-074", file: "RENEWABLE-ENERGY-RESOURCES-KOE-074.pdf" },
+{ name: "RURAL-DEVELOPMENT-ADMINISTRATION-AND-PLANNING-KHU-701", file: "RURAL-DEVELOPMENT-ADMINISTRATION-AND-PLANNING-KHU-701.pdf" },   
+{ name: "VLSI-DESIGN-KEC-072", file: "VLSI-DESIGN-KEC-072.pdf" },  
+{ name: "WIRELESS-MOBILE-COMMUNICATION-KEC-076", file: "WIRELESS-MOBILE-COMMUNICATION-KEC-076.pdf" },
+];
+        
+        // Insert PDF items into the grid
+        const pdfContainer = document.getElementById("pdf-container");
+        pdfFiles.forEach(pdf => {
+            pdfContainer.innerHTML += `
+                <a href="${pdf.file}" class="pdf-item">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <span>${pdf.name}</span>
+                </a>
+            `;
+        });
+    
+        
+    </script>
+</body>
+</html>
