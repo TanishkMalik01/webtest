@@ -27,9 +27,9 @@
 
     function applyLightMode(body, modeIcon) {
         body.classList.remove("dark-mode");
-        modeIcon.src = "/static/dark.png";
+        modeIcon.src = "static/dark.png";
         localStorage.setItem("dark-mode", "disabled");
-        updatePDFIcons("/static/pdf.png");
+        updatePDFIcons("static/pdf.png");
         updateRingColors(false); // Pass false for light mode
     }
 

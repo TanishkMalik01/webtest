@@ -9,7 +9,7 @@ function applyStoredDarkMode() {
       if (modeIcon) modeIcon.src = "/static/light.png";
     } else {
       document.body.classList.remove("dark-mode");
-      if (modeIcon) modeIcon.src = "/static/dark.png";
+      if (modeIcon) modeIcon.src = "static/dark.png";
     }
   }
   
@@ -21,7 +21,7 @@ function applyStoredDarkMode() {
       if (modeIcon) modeIcon.src = "/static/light.png";
       localStorage.setItem("dark-mode", "enabled");
     } else {
-      if (modeIcon) modeIcon.src = "/static/dark.png";
+      if (modeIcon) modeIcon.src = "static/dark.png";
       localStorage.setItem("dark-mode", "disabled");
     }
   }
