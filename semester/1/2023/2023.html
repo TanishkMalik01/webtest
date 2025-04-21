@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semester 1 - 2023 Question Papers</title>
     <link rel="stylesheet" href="../../../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js"></script>
     <style>
         /* PDF Grid Layout: 5 items per row */
        
@@ -47,9 +49,14 @@
     </style>
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleDarkMode()">
-        <img id="mode-icon" src="static/dark.png" alt="Dark Mode Icon">
-    </button>
+    <div class="slider__wrapper">
+    <div class="slider">
+        <span class="handle"></span>
+        <span class="drop"></span>
+    </div>
+    <p class="info">Drag To Toggle Dark/Light Mode</p>
+</div>
+<canvas id="bgCanvas"></canvas>
     
     <div class="ring">
         <i style="--clr:#00ff0a;"></i>

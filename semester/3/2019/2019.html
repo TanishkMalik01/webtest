@@ -58,9 +58,14 @@
     </style>
 </head>
 <body>
-    <button class="toggle-btn" onclick="toggleDarkMode()">
-        <img id="mode-icon" src="static/dark.png" alt="Dark Mode Icon">
-    </button>
+    <div class="slider__wrapper">
+    <div class="slider">
+        <span class="handle"></span>
+        <span class="drop"></span>
+    </div>
+    <p class="info">Drag To Toggle Dark/Light Mode</p>
+</div>
+<canvas id="bgCanvas"></canvas>
     
     <div class="ring">
         <i style="--clr:#00ff0a;"></i>
@@ -112,7 +117,7 @@
         pdfFiles.forEach(pdf => {
             pdfContainer.innerHTML += `
                 <a href="${pdf.file}" class="pdf-item">
-                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <img src="/static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf1.png'}" alt="PDF Icon" class="pdf-icon">
                     <span>${pdf.name}</span>
                 </a>
             `;

@@ -29,10 +29,9 @@
         body.classList.remove("dark-mode");
         modeIcon.src = "static/dark.png";
         localStorage.setItem("dark-mode", "disabled");
-        updatePDFIcons("static/pdf.png");
+        updatePDFIcons("/static/pdf1.png");
         updateRingColors(false); // Pass false for light mode
     }
-
     function toggleDarkMode() {
         const body = document.body;
         const modeIcon = document.getElementById('mode-icon');

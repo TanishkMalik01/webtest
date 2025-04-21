@@ -17,12 +17,19 @@
             margin-top: 50px;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js"></script>
 </head>
 <body>
 
-    <button class="toggle-btn" onclick="toggleDarkMode()">
-        <img id="mode-icon" src="static/dark.png" alt="Dark Mode Icon">
-    </button>
+    <div class="slider__wrapper">
+        <div class="slider">
+            <span class="handle"></span>
+            <span class="drop"></span>
+        </div>
+        <p class="info">Drag To Toggle Dark/Light Mode</p>
+    </div>
+    <canvas id="bgCanvas"></canvas>
 
     <div class="ring">
         <i style="--clr:#00ff0a;"></i>
@@ -50,36 +57,9 @@
     </div>
     <script src="dark-mode-manager.js"></script>
     <script>
-        const rings = document.querySelectorAll('.ring i');
-        const ringContainer = document.querySelector('.ring');
-        const body = document.body;
         const semLogos = document.querySelectorAll('.year-link-image');
         const telegramIcon = document.getElementById('telegram-icon');
-        const modeIcon = document.getElementById('mode-icon');
-
-        function toggleDarkMode() {
-            body.classList.toggle("dark-mode");
-            const isDarkModeEnabled = body.classList.contains("dark-mode");
-
-            if (isDarkModeEnabled) {
-                localStorage.setItem('darkMode', 'enabled');
-                modeIcon.src = "static/light.png";
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-                modeIcon.src = "static/dark.png";
-            }
-
-            updateRingColors(isDarkModeEnabled);
-            updateSemLogos(isDarkModeEnabled);
-            updateTelegramIcon(isDarkModeEnabled);
-        }
-
-        function updateRingColors(isDarkMode) {
-            rings.forEach(ring => {
-                ring.style.borderColor = isDarkMode ? '#fff' : '#333';
-                ring.style.filter = 'drop-shadow(0 0 0 transparent)';
-            });
-        }
+        const body = document.body;
 
         function updateSemLogos(isDarkMode) {
             semLogos.forEach(logoImage => {
@@ -100,42 +80,22 @@
             }
         }
 
-        function applyStoredDarkModePreference() {
+        document.addEventListener('DOMContentLoaded', () => {
             const storedDarkMode = localStorage.getItem('darkMode');
+
+            function updateUIForDarkMode(isDarkMode) {
+                updateSemLogos(isDarkMode);
+                updateTelegramIcon(isDarkMode);
+            }
 
             if (storedDarkMode === 'enabled') {
                 body.classList.add("dark-mode");
-                modeIcon.src = "static/light.png";
-                updateRingColors(true);
-                updateSemLogos(true);
-                updateTelegramIcon(true);
+                updateUIForDarkMode(true);
             } else {
-                modeIcon.src = "static/dark.png";
-                updateRingColors(false);
-                updateSemLogos(false);
-                updateTelegramIcon(false);
+                updateUIForDarkMode(false);
             }
-        }
-
-        applyStoredDarkModePreference();
-
-        document.addEventListener('mousemove', (e) => {
-            const rect = ringContainer.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const distance = Math.sqrt((e.clientX - centerX) ** 2 + (e.clientY - centerY) ** 2);
-            const radius = rect.width / 2;
-
-            rings.forEach(ring => {
-                if (distance <= radius) {
-                    const clr = getComputedStyle(ring).getPropertyValue('--clr').trim();
-                    ring.style.borderColor = clr;
-                    ring.style.filter = `drop-shadow(0 0 25px ${clr})`;
-                } else {
-                    updateRingColors(body.classList.contains('dark-mode'));
-                }
-            });
         });
     </script>
+    <script src="toggle.js"></script>
 </body>
 </html>
