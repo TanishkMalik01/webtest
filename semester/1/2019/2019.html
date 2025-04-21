@@ -6,56 +6,49 @@
     <title>Semester 1 - 2019 Question Papers</title>
     <link rel="stylesheet" href="../../../styles.css">
     <style>
-        /* PDF Grid Layout: 5 items per row */
-        .dark-mode {
-            background-color: #111; /* Dark mode background */
-            color: white; /* Dark mode text color */
+        /* Global Dark Mode Styles */
+        body {
+            color: #000; /* Default light mode text color */
         }
+        .dark-mode {
+            background-color: #111;
+            color: #fff !important;
+        }
+
+        /* PDF Item specific styles */
         .pdf-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: white; /* Default color, will be overridden by JS */
             font-size: 18px;
             width: 150px;
             padding: 10px;
-            transition: color 0.5s;
+            color: #000; /* Default light mode color */
         }
 
-        .pdf-item span {
-            color: white; /* Default text color */
-        }
-
+        .dark-mode .pdf-item,
         .dark-mode .pdf-item span {
-            color: #fff; /* White text in dark mode */
-        }
-
-        .pdf-item:not(.dark-mode) span{
-            color: #000;
+            color: #fff !important;
         }
 
         .pdf-icon {
             width: 70px;
             height: 70px;
-            transition: filter 0.5s;
-        }
-        .dark-mode .pdf-icon {
-            /* The src is swapped via JS, so no invert filter here */
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/Draggable.min.js"></script>
 </head>
 <body>
     <div class="slider__wrapper">
-    <div class="slider">
-        <span class="handle"></span>
-        <span class="drop"></span>
+        <div class="slider">
+            <span class="handle"></span>
+            <span class="drop"></span>
+        </div>
+        <p class="info">Drag To Toggle Dark/Light Mode</p>
     </div>
-    <p class="info">Drag To Toggle Dark/Light Mode</p>
-</div>
-<canvas id="bgCanvas"></canvas>
+    <canvas id="bgCanvas"></canvas>
     
     <div class="ring">
         <i style="--clr:#00ff0a;"></i>
@@ -68,8 +61,7 @@
         <br/><br/>
         <h1>2019 Question Papers</h1>
         <p>Select a subject to download:</p>
-        <div class="pdf-container" id="pdf-container">
-            </div>
+        <div class="pdf-container" id="pdf-container"></div>
     </div>
     
     <div class="contact-icons">
@@ -81,25 +73,31 @@
     <script>
         // Array of PDF files with names and file paths
         const pdfFiles = [
-  { name: "BASIC-ELECTRICAL-ENGG.-KEE-101", file: "BASIC-ELECTRICAL-ENGG.-KEE-101.pdf" },
-  { name: "CHEMISTRY-KAS-102-1", file: "CHEMISTRY-KAS-102-1.pdf" },
-  { name: "MATHEMATICS-I-KAS-103-1", file: "MATHEMATICS-I-KAS-103-1.pdf" },
-  { name: "PHYSICS-KAS-101-", file: "PHYSICS-KAS-101-.pdf" },
-  { name: "PROGRAMMING-FOR-PROBLEM-SOLVING-KCS-101-1", file: "PROGRAMMING-FOR-PROBLEM-SOLVING-KCS-101-1.pdf" },
-];
-    
+            { name: "BASIC-ELECTRICAL-ENGG.-KEE-101", file: "BASIC-ELECTRICAL-ENGG.-KEE-101.pdf" },
+            { name: "CHEMISTRY-KAS-102-1", file: "CHEMISTRY-KAS-102-1.pdf" },
+            { name: "MATHEMATICS-I-KAS-103-1", file: "MATHEMATICS-I-KAS-103-1.pdf" },
+            { name: "PHYSICS-KAS-101-", file: "PHYSICS-KAS-101-.pdf" },
+            { name: "PROGRAMMING-FOR-PROBLEM-SOLVING-KCS-101-1", file: "PROGRAMMING-FOR-PROBLEM-SOLVING-KCS-101-1.pdf" },
+        ];
         // Insert PDF items into the grid
         const pdfContainer = document.getElementById("pdf-container");
         pdfFiles.forEach(pdf => {
             pdfContainer.innerHTML += `
                 <a href="${pdf.file}" class="pdf-item">
-                    <img src="../../../../static/${document.body.classList.contains('dark-mode') ? 'image.png' : 'pdf.png'}" alt="PDF Icon" class="pdf-icon">
+                    <img src="../../../static/pdf1.png" alt="PDF Icon" class="pdf-icon">
                     <span>${pdf.name}</span>
                 </a>
             `;
         });
-    
-       
+
+        // Add event listener for dark mode changes
+        document.body.addEventListener('classChange', function() {
+            const pdfItems = document.querySelectorAll('.pdf-item span');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            pdfItems.forEach(span => {
+                span.style.color = isDarkMode ? '#fff' : '#000';
+            });
+        });
     </script>
 </body>
 </html>
